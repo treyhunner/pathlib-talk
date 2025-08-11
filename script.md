@@ -54,14 +54,40 @@ def find_editorconfig_file() -> str:
 ### Introducing `pathlib.Path`
 
 - Python has a `pathlib` module that includes a `Path` class which is specifically meant for representing file paths
-- TODO Here's code that uses `pathlib.Path` to ...
+- Here's code that uses `pathlib.Path` to do the same path construction:
+
+```python
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+TEMPLATES_DIR = BASE_DIR / "templates"
+```
+
+Notice how much more readable this is! No nested function calls to read from inside-out.
 
 Okay, but what's the selling point?
 
 Well, the main reason *I* reach for `pathlib` is that it consolidates *lots* of different path-related functionality into one class.
 So if I have a `pathlib.Path` object and I want to ask questions about it, I can look up help on that object to find out which attribute or method that I need. There's no extra imports, no digging through different standard library modules looking for the answer... it's all either an attribute or a method directly on the `Path` object.
 
-TODO show an example
+Here's what I mean:
+
+```python
+from pathlib import Path
+
+config_file = Path("~/.my_config.toml").expanduser()
+
+# All of these are methods or attributes on the Path object:
+print(f"Full path: {config_file.resolve()}")
+print(f"Filename: {config_file.name}")
+print(f"Directory: {config_file.parent}")
+print(f"Extension: {config_file.suffix}")
+print(f"File exists: {config_file.exists()}")
+print(f"Is a file: {config_file.is_file()}")
+print(f"Is a directory: {config_file.is_dir()}")
+```
+
+With the old approach, I'd need to import `os.path` for some operations, `os` for others, maybe `glob` for finding files... But with `pathlib`, it's all right there on the `Path` object.
 
 ### Why use `pathlib.Path` objects if we'll just need to convert them back to strings?
 
@@ -193,7 +219,7 @@ from glob import glob
 csv_files = glob("**/*.csv", recursive=True)
 
 # New way
-from pathlib impoch Path
+from pathlib import Path
 csv_files = list(Path.cwd().rglob("*.csv"))
 ```
 
@@ -302,7 +328,7 @@ from pathlib import Path
 
 config_path = Path(".config").resolve()
 
-print(f"Reading {config_path.name}!r from {config.path.parent!r}...")
+print(f"Reading {config_path.name!r} from {config_path.parent!r}...")
 ```
 
 And if we need to do something special based on the file extension or some other feature of the filename, `pathlib` makes that easier:
@@ -329,9 +355,19 @@ Let's say we're using the `argparse` module to accept command-line arguments.
 
 If we wanted to open a file immediately, without ever displaying or processing the file path ourselves, we could use `argparse.FileType`:
 
-TODO show
+```python
+import argparse
 
-But what if we want to accept either a directory name or a filename?
+parser = argparse.ArgumentParser()
+parser.add_argument("input", type=argparse.FileType("r"))
+args = parser.parse_args()
+
+content = args.input.read()
+```
+
+This approach is great if we want to immediately open the file, but what if we wanted to do other things with the path first?...
+
+Or what if we want to accept either a directory name or a filename?
 
 Instead of using `argparse.FileType`, we could specify an argument type of `pathlib.Path`:
 
@@ -356,13 +392,46 @@ Since `argparse` will call whatever type is given to it, we'll end up with a new
 
 ### Embracing the iterators and generators of `pathlib`
 
-TODO explanation of the various methods that return iterators and how that's often a nicer default than returning a list... though you can always do a list conversion. Compare each of the approaches to the equivalent non-pathlib list and iterator approaches (glob.glob, glob.iglob, etc.)
+One thing I really appreciate about `pathlib` is that many of its methods return iterators instead of lists.
+
+This is often faster and more convenient, especially if we're processing file paths one at a time or if we may not even look at every file path before finding something we're looking for.
+
+For example, instead of `glob.glob()` which returns a list:
+
+```python
+from glob import glob
+
+# Returns a list - loads everything into memory at once
+python_files = glob("**/*.py", recursive=True)
+for filename in python_files:
+    print(f"Processing {filename}")
+```
+
+The `pathlib` equivalent returns an iterator:
+
+```python
+from pathlib import Path
+
+# Returns an iterator - processes one file at a time
+for python_file in Path.cwd().rglob("*.py"):
+    print(f"Processing {python_file}")
+```
+
+If you *do* need a list, you can always convert it:
+
+```python
+python_files = list(Path.cwd().rglob("*.py"))
+```
+
+This pattern is consistent across `iterdir()`, `glob()`, `rglob()`, and `walk()` - they all return iterators by default.
+
+Here are some more examples:
 
 ```python
 # Find all Python files in current directory and subdirectories
 for py_file in Path.cwd().rglob('*.py'):
     print(f"Processing {py_file}")
-    
+
 # List all directories
 for item in Path.cwd().iterdir():
     if item.is_dir():
@@ -444,7 +513,31 @@ But now extending `pathlib` *is* officially supported.
 
 There's even a `with_segments` method that subclasses can use to pass extra metadata to *any* derived paths:
 
-TODO show
+Let's say we want to create a `GitPath` that remembers which Git repository it belongs to:
+
+```python
+import pathlib
+
+class GitPath(pathlib.Path):
+    def __init__(self, *segments, repo_root):
+        super().__init__(*segments)
+        self.repo_root = repo_root
+
+    def with_segments(self, *args):
+        """Ensure any direved paths remember the repo root."""
+        return type(self)(*args, repo_root=self.repo_root)
+
+    def relative_to_repo(self):
+        if self.repo_root:
+            return self.relative_to(self.repo_root)
+        return self
+
+    def __repr__(self):
+        class_name = type(self).__name__
+        return f"{class_name}({str(self)!r}, repo_root={self.repo_root!r})"
+```
+
+Now any path operations on `GitPath` objects will maintain that extra `repo_root` metadata.
 
 
 #### Python's built-in support for third-party `pathlib` alternatives thanks to its support for Path-like objects (`__fspath__`)
@@ -461,7 +554,38 @@ But this protocol isn't really about `pathlib`... it's about a `__fspath__` meth
 - `__fspath__` just needs to return a string representing a file path
 - Libraries like `plumbum`, `path.py` benefit from this standardization
 
-TODO show good example of a popular third-party non-pathlib-based library and using its path as a path-like object with `open` or something
+For example, the `plumbum` library has its own `Path` class that works differently from `pathlib`, but thanks to PEP 519, it works seamlessly with Python's built-in functions:
+
+```python
+from plumbum import local
+
+# This is a plumbum Path, not a pathlib Path
+my_file = local.path("example.txt")
+
+# But it works with open() because it has __fspath__
+with open(my_file) as f:
+    content = f.read()
+
+# It also works with os.path functions
+import os.path
+print(os.path.exists(my_file))  # Works!
+```
+
+You could even create your own minimal path-like class:
+
+```python
+class MyPath:
+    def __init__(self, path):
+        self.path = str(path)
+
+    def __fspath__(self):
+        return self.path
+
+# This works with open() too!
+my_path = MyPath("example.txt")
+with open(my_path) as f:
+    content = f.read()
+```
 
 
 ## pathlib anti-patterns
@@ -493,11 +617,49 @@ I see the `open` method as a relic that only exists because when `pathlib` was f
 
 ### Using `joinpath` instead of passing arguments to `Path`
 
-TODO explain `config = Path(directory).joinpath(".editorconfig")` or `config = Path(directory) / ".editorconfig"` versus `config = Path(directory, ".editorconfig")`
+If you have a variable might represent a file path string or a `Path` object and you want to join that string to another path segment, you might think to do this:
 
-### TODO ??? another anti-pattern
+```python
+# Less ideal approaches
+config = Path(directory).joinpath(".editorconfig")
+# or
+config = Path(directory) / ".editorconfig"
+```
 
-TODO
+But there's a more direct approach:
+
+```python
+# Better approach
+config = Path(directory, ".editorconfig")
+```
+
+This last approach works whether `directory` is a string or a `Path` object, and it's more concise. The `Path()` constructor can take multiple arguments and will join them for you, so you don't need the extra `.joinpath()` call or `/` operator when you're already constructing a new `Path`.
+
+### Converting Path objects to strings unnecessarily
+
+Some people worry that they need to convert `Path` objects back to strings "just in case":
+
+```python
+# Unnecessary conversion
+from pathlib import Path
+
+path = Path("example.txt")
+with open(str(path)) as f:  # str() not needed!
+    content = f.read()
+```
+
+But as we've discussed, this conversion is almost never necessary:
+
+```python
+# Just use the Path directly
+from pathlib import Path
+
+path = Path("example.txt")
+with open(path) as f:
+    content = f.read()
+```
+
+The only time you might need `str()` is if you're using a very old third-party library that doesn't properly support path-like objects.
 
 
 ## Outro (3 minutes)
