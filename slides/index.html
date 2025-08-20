@@ -40,13 +40,13 @@
 
         <!-- About me slide -->
         <section>
-          <div class="aboutme-card fragment">
+          <p class="fragment" data-fragment-index=3 style="margin-bottom: 1em; margin-top: -1em;"><a href="http://trey.io/news" style="color: #663399; font-weight: bold;">trey.io/news</a> —  a weekly Python tip 💌</p>
+          <div class="aboutme-card fragment" data-fragment-index=1>
             <a href="http://truthful.technology"><img src="truthful-technology-logo.svg" class="no-style aboutme-logos" alt="Truthful Technology"></a>
           </div>
-          <div class="aboutme-card fragment">
+          <div class="aboutme-card fragment" data-fragment-index=2>
             <a href="http://pythonmorsels.com"><img src="morsels-logo.svg" class="no-style aboutme-logos" alt="Python Morsels"></a>
           </div>
-          <p>TODO show link to my newsletter</p>
           <aside class="notes" data-markdown>
             - I help folks level-up their Python skills
             - I run both virtual and on-site Python workshops and courses for teams
@@ -749,7 +749,31 @@ content = Path("config.txt").read_text()
         </section>
 
         <section>
-          TODO
+          <table style="font-size: 0.6em; width: 100%;">
+            <tr>
+              <th>Task</th>
+              <th>The old way</th>
+              <th>The pathlib way</th>
+            </tr>
+            <tr>
+              <td style="border: 0; font-size: 110%;">Make dir</td>
+              <td style="border: 0;"><code>os.mkdir(path)</code></td>
+              <td style="border: 0;" rowspan="2"><code>path.mkdir(parents=True)</code></td>
+            </tr>
+            <tr>
+              <td style="border: 0; font-size: 110%;">with parents</td>
+              <td style="border: 0;"><code>os.makedirs(path)</code></td>
+            </tr>
+            <tr>
+              <td style="border: 0; font-size: 110%;">Copy file</td>
+              <td style="border: 0;"><code>shutil.copy(src, dst)</code></td>
+              <td style="border: 0;" rowspan="2"><code>path.copy_into(dst)</code><br><small>Python 3.14+</small></td>
+            </tr>
+            <tr>
+              <td style="border: 0; font-size: 110%;">into dir</td>
+              <td style="border: 0;"><code>shutil.copy(src, dst/filename)</code></td>
+            </tr>
+          </table>
           <aside class="notes" data-markdown>
             - The methods on the `pathlib.Path` class are a bit deliberately designed than many of the other path-related functions included in Python
             - For example, compare the `pathlib.Path` class's `mkdir` method to its alternatives...
@@ -984,10 +1008,24 @@ with open(<strong>path</strong>) as f:
         </section>
 
         <section>
-          TODO examples of third-party libraries that *accept* pathlib.Path objects
+          <h3>Third-party libraries support <code>Path</code> objects</h3>
+          <div>
+            <p> <code>requests.get(path.as_uri())</code></p>
+            <p><code>pandas.read_csv(path)</code></p>
+            <p><code>PIL.Image.open(path)</code></p>
+            <p><code>pytest.main([path])</code></p>
+            <p><code>click.File()(path)</code></p>
+            <p><code>django</code> (in <code>settings</code> for example)</p>
+          </div>
           <aside class="notes" data-markdown>
+            - TODO
             - Even most third-party libraries that handle file paths will usually *also* accept `pathlib.Path` objects...
-            - TODO including...
+            - Including pandas for reading CSV files
+            - PIL for opening images
+            - pytest for running tests
+            - click for file handling
+            - Many Django settings accept Path objects
+            - Most modern libraries follow the path-like protocol
           </aside>
         </section>
       </section>
@@ -1003,13 +1041,29 @@ with open(<strong>path</strong>) as f:
         </section>
 
         <section>
-          <h1>TODO code</h1>
+          <h3>Creating <code>Path</code> objects</h3>
+          <pre class="python"><code data-trim data-noescape>
+>>> from pathlib import Path
+
+# Create from string
+>>> Path("documents/notes.txt")
+PosixPath('documents/notes.txt')
+
+# Cross-platform: always use forward slashes
+>>> Path("documents/project/readme.md")
+PosixPath('documents/project/readme.md')
+
+# Windows automatically normalizes backslashes
+>>> Path(r"documents\notes.txt") == Path("documents/notes.txt")  
+True  # On Windows
+          </code></pre>
           <aside class="notes" data-markdown>
+            - TODO
             - First, you'll make a `Path` object, usually by passing a string to the `Path` class
             - When you're writing cross-platform compatible code, you'll want to use forward slashes in the string literals you pass to `pathlib.Path`
             - ... but don't worry about backslashes on Windows!
             - If you end up with a backslash-separated path on a Windows machine, pathlib will normalize it automatically!
-            - On Windows, this path with backslash separators will be interpreted the same way as *this* path with forward slash separators (TODO show the equality)
+            - On Windows, this path with backslash separators will be interpreted the same way as *this* path with forward slash separators
           </aside>
         </section>
 
@@ -1041,38 +1095,79 @@ True</span>
         </section>
 
         <section>
-          <h3>TODO</h3>
+          <h3>Consolidated functionality</h3>
+          <table style="font-size: 0.75em; width: 100%;">
+            <tr>
+              <th>pathlib</th>
+              <th>Traditional approach</th>
+              <th>Returns</th>
+            </tr>
+            <tr>
+              <td><code>Path(name)</code></td>
+              <td><code>os.path.normpath(name)</code></td>
+              <td><code>Path</code></td>
+            </tr>
+            <tr>
+              <td><code>path.resolve()</code></td>
+              <td><code>os.path.abspath(path)</code></td>
+              <td><code>Path</code></td>
+            </tr>
+            <tr>
+              <td><code>path.name</code></td>
+              <td><code>os.path.basename(path)</code></td>
+              <td><code>str</code></td>
+            </tr>
+            <tr>
+              <td><code>path.parent</code></td>
+              <td><code>os.path.dirname(path)</code></td>
+              <td><code>Path</code></td>
+            </tr>
+            <tr>
+              <td><code>path.suffix</code></td>
+              <td><code>os.path.splitext(path)[1]</code></td>
+              <td><code>str</code></td>
+            </tr>
+            <tr>
+              <td><code>path.is_file()</code></td>
+              <td><code>os.path.isfile(path)</code></td>
+              <td><code>bool</code></td>
+            </tr>
+            <tr>
+              <td><code>parent / name</code></td>
+              <td><code>os.path.join(parent, name)</code></td>
+              <td><code>Path</code></td>
+            </tr>
+          </table>
           <aside class="notes" data-markdown>
-            - TODO link to and show screenshots of:
-              - https://pyref.dev/pathlib#corresponding-tools
-              - https://pym.dev/pathlib-module/#conversions
-              - https://pym.dev/pathlib-module/#cheat-sheet
-            - TODO The main reason I reach for pathlib is consolidated functionality
-            - TODO maybe use this table (make it HTML within the slide) to talk about os.path equivalence
-| `pathlib.Path(name)`        | `os.path.normpath(name)`            | `Path`
-| `path.resolve()`            | `os.path.abspath(path)`             | `Path`
-| `path.name`                 | `os.path.basename(path)`            | `str`
-| `path.parent`               | `os.path.dirname(path)`             | `Path`
-| `path.suffix`               | `os.path.splitext(path)[1]`         | `str`
-| `path.stem`                 | `os.path.splitext(path)[0]`         | `str`
-| `path.relative_to(parent)`  | `os.path.relpath(path, parent)`     | `Path`
-| `path.is_file()`            | `os.path.isfile(path)`              | `bool`
-| `path.is_dir()`             | `os.path.isdir(path)`               | `bool`
-| `pathlib.Path.home()`       | `os.path.expanduser("~")`           | `Path`
-| `parent / name`             | `os.path.join(parent, name)`        | `Path`
-            - With the old approach, I'd need os.path for some operations, os for others, maybe glob
-            - But with pathlib, it's all right there on the Path object
+            - I always found the functions in `os.path` to be unfortunately named...
+            - Lots of shortened words all squashed together...
+            - With pathlib, all the same functionality exists as either methods or attributes on `Path` objects
+            - And they're all pretty well-named
           </aside>
         </section>
 
         <section>
           <h3>Gradual adoption</h3>
-          <p>TODO more example here</p>
           <pre class="python"><code data-trim data-noescape>
-    path = Path(path_or_string)  # Supports both strings and Paths
+# Start by converting at function boundaries
+def process_config(config_path):
+    path = Path(config_path)  # Works with strings OR Path objects
+    return path.read_text()
+
+# Legacy code still works
+old_function("/path/to/config.txt")
+new_function(Path("config.txt"))
+
+# Mix and match as you migrate
+for filename in os.listdir(directory):
+    file_path = Path(directory) / filename  # pathlib joining
+    if file_path.suffix == '.py':           # pathlib properties
+        with open(file_path) as f:          # builtin functions accept Path
+            content = f.read()
           </code></pre>
           <p class="fragment">The Path class accepts strings <em>and</em> other Path objects</p>
           <aside class="notes" data-markdown>
+            - TODO
             - Something that's pretty great `pathlib` is that you *can* gradually adopt `pathlib`
             - Path objects *should* work everywhere string paths work
             - And you can use the built-in `Path` class to make sure that the path you're working is a `Path` object and not a string
@@ -1175,7 +1270,7 @@ class BetterPath(pathlib.Path):
 class GitPath(pathlib.Path):
     def __init__(self, *segments, repo_root):
         super().__init__(*segments)
-        self.repo_root = repo_root
+        self.repo_root = pathlib.Path(repo_root).resolve()
 
     def with_segments(self, *args):
         """Ensure any derived paths remember the repo root."""
@@ -1190,8 +1285,13 @@ class GitPath(pathlib.Path):
         class_name = type(self).__name__
         return f"{class_name}({str(self)!r}, repo_root={self.repo_root!r})"
           </code></pre>
-          <p>TODO show use in Python REPL</p>
+          <pre class="python"><code data-trim data-noescape style="font-size: 70%">
+>>> git_path = GitPath("src/main.py", repo_root=".")
+>>> git_path.parent  # The repo_root is preserved when creating new paths
+GitPath('/home/user/project/src', repo_root='/home/user/project')
+          </code></pre>
           <aside class="notes" data-markdown>
+            - TODO
             - If you need to attach metadata to a custom `Path` object, you can override the `with_segments` method to ensure that your metadata is preserved for *any* `Path` that's *derived* from an existing `Path`
             - Whether we're joining a new path onto ours or getting a parent directory, that `repo_root` attribute will be maintained on the new `GitPath` objects that are generated
             - This can be a pretty powerful pattern if you need specialized `Path` subclasses
@@ -1211,16 +1311,22 @@ TODO
         </section>
 
         <section>
-          <h3>Third-party alternatives with PEP 519</h3>
-          TODO bullet points
+          <h1>PEP 519</h1>
+          <ul>
+            <li class="fragment">Defines the <code>os.PathLike</code> protocol</li>
+            <li class="fragment">Built-in functions like <code>open()</code> accept path-like objects</li>
+            <li class="fragment">Any object with a <code>__fspath__()</code> method works</li>
+            <li class="fragment">Enables third-party path-like</li>
+            <li class="fragment">Third-party libraries use <code>os.fspath()</code> paths to strings</li>
+          </ul>
           <aside class="notes" data-markdown>
-            - 519 defines the Path-like protocol
+            - TODO
+            - PEP 519 defines the Path-like protocol
             - Path-like objects are accepted by tools like `open`, `os.chdir`, and `subprocess.run`
             - The Path-like protocol is the reason that `pathlib`'s `Path` objects are accept by tools like `open`, `os.chdir`, and `subprocess.run`
             - Any object with a `__fspath__` method will work with the various built-in Python functions that accept paths
             - And any third-party utility that wants to convert a Path-like object into a string can use the `os.fspath` function to do so
-            - TODO
-            - os.PathLike protocol
+            - This enables a whole ecosystem of path-like objects beyond just pathlib
           </aside>
         </section>
 
@@ -1334,12 +1440,6 @@ with open(path) as f:
           </aside>
         </section>
 
-        <section>
-          <h3>TODO others</h3>
-          <aside class="notes" data-markdown>
-          </aside>
-        </section>
-      </section>
       </section>
 
       <!-- Outro -->
