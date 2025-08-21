@@ -85,13 +85,13 @@
             <img src="left_shark.jpg" class="fragment no-style" style="margin: auto;" data-fragment-index=5>
             <img src="the_dress.jpg" class="fragment no-style" style="margin: auto;" data-fragment-index=4>
             <div style="position: relative; display: inline-block;" class="fragment" data-fragment-index=2>
-            <img src="tiktok_logo.png" class="no-style" style="margin: auto;">
+            <img src="tiktok_logo.png" class="no-style" style="margin: auto; opacity: 0.8;">
             <!-- Red X overlay -->
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
+            <div style="position: absolute; top: -10%; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.8;">
                 <!-- First diagonal line -->
-                <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 4px; background-color: red; transform: translateY(-50%) rotate(45deg); transform-origin: center;"></div>
+                <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(45deg); transform-origin: center;"></div>
                 <!-- Second diagonal line -->
-                <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 4px; background-color: red; transform: translateY(-50%) rotate(-45deg); transform-origin: center;"></div>
+                <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(-45deg); transform-origin: center;"></div>
             </div>
             </div>
             <img src="old_lateshow_colbert_logo.jpg" class="fragment no-style" style="margin: auto;" data-fragment-index=1>
@@ -763,7 +763,7 @@ content = Path("config.txt").read_text()
             <tr>
               <td style="border: 0; font-size: 110%;">Make dir</td>
               <td style="border: 0;"><code>os.mkdir(path)</code></td>
-              <td style="border: 0;" rowspan="2"><code>path.mkdir(parents=True)</code></td>
+              <td style="border: 0; vertical-align: middle;" rowspan="2"><code>path.mkdir(parents=True)</code></td>
             </tr>
             <tr>
               <td style="border: 0; font-size: 110%;">with parents</td>
@@ -772,7 +772,7 @@ content = Path("config.txt").read_text()
             <tr>
               <td style="border: 0; font-size: 110%;">Copy file</td>
               <td style="border: 0;"><code>shutil.copy(src, dst)</code></td>
-              <td style="border: 0;" rowspan="2"><code>path.copy_into(dst)</code><br><small>Python 3.14+</small></td>
+              <td style="border: 0; vertical-align: middle;" rowspan="2"><code>path.copy_into(dst)</code><br><small>Python 3.14+</small></td>
             </tr>
             <tr>
               <td style="border: 0; font-size: 110%;">into dir</td>
@@ -1015,22 +1015,17 @@ with open(<strong>path</strong>) as f:
         <section>
           <h3>Third-party libraries support <code>Path</code> objects</h3>
           <div>
-            <p> <code>requests.get(path.as_uri())</code></p>
+            <p><code>django</code> (in <code>settings</code> for example)</p>
             <p><code>pandas.read_csv(path)</code></p>
             <p><code>PIL.Image.open(path)</code></p>
             <p><code>pytest.main([path])</code></p>
             <p><code>click.File()(path)</code></p>
-            <p><code>django</code> (in <code>settings</code> for example)</p>
           </div>
           <aside class="notes" data-markdown>
             - TODO
             - Even most third-party libraries that handle file paths will usually *also* accept `pathlib.Path` objects...
-            - Including pandas for reading CSV files
-            - PIL for opening images
-            - pytest for running tests
-            - click for file handling
-            - Many Django settings accept Path objects
-            - Most modern libraries follow the path-like protocol
+            - Django, pandas, pillow, pytest, and click all support `Path` objects
+            - Most modern Python libraries work just fine with `pathlib`
           </aside>
         </section>
       </section>
@@ -1040,8 +1035,8 @@ with open(<strong>path</strong>) as f:
         <section>
           <h2>Okay, but how?</h2>
           <aside class="notes" data-markdown>
-            - TODO transition from previous slide?
-            - How do you actually adopt pathlib in practice?
+            - So `pathlib` is great...
+            - But in practice, how can you start using `pathlib`?
           </aside>
         </section>
 
@@ -1049,26 +1044,21 @@ with open(<strong>path</strong>) as f:
           <h3>Creating <code>Path</code> objects</h3>
           <pre class="python"><code data-trim data-noescape>
 >>> from pathlib import Path
-
-# Create from string
->>> Path("documents/notes.txt")
-PosixPath('documents/notes.txt')
-
-# Cross-platform: always use forward slashes
->>> Path("documents/project/readme.md")
-PosixPath('documents/project/readme.md')
-
-# Windows automatically normalizes backslashes
->>> Path(r"documents\notes.txt") == Path("documents/notes.txt")  
-True  # On Windows
+>>> <span class="fragment">notes_path = Path("Documents/notes.txt")
+>>> </span><span class="fragment">notes_path
+WindowsPath('documents/notes.txt')
+>>> </span><span class="fragment">notes_path2 = Path(r"documents\notes.txt")
+>>> </span><span class="fragment">notes_path2
+WindowsPath('documents/notes.txt')
+>>> </span><span class="fragment">notes_path2 == notes_path
+True</span>
           </code></pre>
           <aside class="notes" data-markdown>
-            - TODO
-            - First, you'll make a `Path` object, usually by passing a string to the `Path` class
+            - Pretty much anytime you encounter a string that represents a file path **(click)**, you'll pass that string to the `Path` class to get `Path` object **(click)**
             - When you're writing cross-platform compatible code, you'll want to use forward slashes in the string literals you pass to `pathlib.Path`
-            - ... but don't worry about backslashes on Windows!
-            - If you end up with a backslash-separated path on a Windows machine, pathlib will normalize it automatically!
-            - On Windows, this path with backslash separators will be interpreted the same way as *this* path with forward slash separators
+            - ... but don't worry about backslashes on Windows! **(click)**
+            - If you end up with a backslash-separated path on a Windows machine, pathlib will normalize it automatically! **(click)**
+            - On Windows, this path with backslash separators will be interpreted **(click)** the same way as *this* path with forward slash separators
           </aside>
         </section>
 
@@ -1173,7 +1163,7 @@ for filename in os.listdir(directory):
           <p class="fragment">The Path class accepts strings <em>and</em> other Path objects</p>
           <aside class="notes" data-markdown>
             - TODO
-            - Something that's pretty great `pathlib` is that you *can* gradually adopt `pathlib`
+            - Something that's pretty great about `pathlib` is that you *can* gradually adopt `pathlib`
             - Path objects *should* work everywhere string paths work
             - And you can use the built-in `Path` class to make sure that the path you're working is a `Path` object and not a string
             - Just as you can pass a any iterable to the built-in `list` function to turn it into a `list`, including the `list` type, you can also pass pass either strings *or* `Path` objects to the `Path` class to make sure you're working with a `Path` object
@@ -1270,45 +1260,38 @@ class BetterPath(pathlib.Path):
         </section>
 
         <section>
-          <h3>with_segments for metadata</h3>
+          <pre class="python fragment" data-fragment-index=2><code data-trim data-noescape style="font-size: 70%">
+>>> git_path = GitPath("src/main.py", repo_root=".")
+>>> <span class="fragment" data-fragment-index=3>git_path.parent  # repo_root is preserved when creating new paths
+GitPath('/home/user/project/src', <span class="fragment bold" data-fragment-index=4>repo_root='/home/user/project')</span></span>
+          </code></pre>
           <pre class="python"><code data-trim data-noescape style="font-size: 70%">
 class GitPath(pathlib.Path):
     def __init__(self, *segments, repo_root):
         super().__init__(*segments)
         self.repo_root = pathlib.Path(repo_root).resolve()
 
-    def with_segments(self, *args):
+    def <span class="fragment bold" data-fragment-index=1>with_segments</span>(self, *args):
         """Ensure any derived paths remember the repo root."""
         return type(self)(*args, repo_root=self.repo_root)
 
     def relative_to_repo(self):
-        if self.repo_root:
-            return self.relative_to(self.repo_root)
-        return self
+        return self.relative_to(self.repo_root or self.root)
 
     def __repr__(self):
-        class_name = type(self).__name__
-        return f"{class_name}({str(self)!r}, repo_root={self.repo_root!r})"
-          </code></pre>
-          <pre class="python"><code data-trim data-noescape style="font-size: 70%">
->>> git_path = GitPath("src/main.py", repo_root=".")
->>> git_path.parent  # The repo_root is preserved when creating new paths
-GitPath('/home/user/project/src', repo_root='/home/user/project')
+        return f"{type(self).__name__}({str(self)!r}, repo_root={self.repo_root!r})"
           </code></pre>
           <aside class="notes" data-markdown>
-            - TODO
-            - If you need to attach metadata to a custom `Path` object, you can override the `with_segments` method to ensure that your metadata is preserved for *any* `Path` that's *derived* from an existing `Path`
-            - Whether we're joining a new path onto ours or getting a parent directory, that `repo_root` attribute will be maintained on the new `GitPath` objects that are generated
-            - This can be a pretty powerful pattern if you need specialized `Path` subclasses
+            - If you need to attach metadata to a custom `Path` object, you can override the `with_segments` method **(click)** to ensure that your metadata is preserved for *any* `Path` that's *derived* from an existing `Path`
+            - Whether we're joining a new path onto ours or getting a parent directory **(click)**, that `repo_root` attribute **(click)** will be maintained on the new `GitPath` objects that are generated
+            - This pattern makes it pretty easy to make specialized `Path` subclasses
           </aside>
         </section>
 
         <section>
           <h3>Third-party alternatives with PEP 519</h3>
-          <pre class="python"><code data-trim data-noescape>
-TODO
-          </code></pre>
           <aside class="notes" data-markdown>
+            - TODO add code example!
             - When you learned that you can loop over a list in Python, you were learning something about lists, but you were *also* learning something about *iterables*
             - When we learned about all the different Python utilities that accept `pathlib.Path` objects... we *also* learning about `Path`-like objects
             - `pathlib` is part of a larger ecosystem
@@ -1325,13 +1308,12 @@ TODO
             <li class="fragment">Third-party libraries use <code>os.fspath()</code> paths to strings</li>
           </ul>
           <aside class="notes" data-markdown>
-            - TODO
             - PEP 519 defines the Path-like protocol
-            - Path-like objects are accepted by tools like `open`, `os.chdir`, and `subprocess.run`
-            - The Path-like protocol is the reason that `pathlib`'s `Path` objects are accept by tools like `open`, `os.chdir`, and `subprocess.run`
-            - Any object with a `__fspath__` method will work with the various built-in Python functions that accept paths
+            - All Path-like objects are accepted by `open`, and all other built-in path tools
+            - The only that's needed for a Path-like object is a `__fspath__` method
+            - That method will make an object work with all of Python's many path-accepting functions
             - And any third-party utility that wants to convert a Path-like object into a string can use the `os.fspath` function to do so
-            - This enables a whole ecosystem of path-like objects beyond just pathlib
+            - This PEP allows for a whole ecosystem of Path-like objects beyond just `pathlib`
           </aside>
         </section>
 
@@ -1352,7 +1334,10 @@ with open(my_path) as f:
     content = f.read()
           </code></pre>
           <aside class="notes" data-markdown>
-            - TODO for example, this `MyPath` class, which *does not* inherit from `pathlib.Path`, *will* work with the built-in `open` function
+            - TODO add transitions to code
+            - For example, here's a class called `MyPath` which *does not* inherit from `pathlib.Path`
+            - And yet, this class *works* with the built-in `open` function
+            - You probably won't want to make own your `Path` object scompletely from scratch, but you might use a third-party library that *does*
           </aside>
         </section>
 
@@ -1373,9 +1358,9 @@ import os.path
 print(os.path.exists(my_file))  # Works!
           </code></pre>
           <aside class="notes" data-markdown>
-            - Thanks to this PEP, there are Path-like objects in third-party libraries
-            - The plumbum has its own Path class that works differently from pathlib's `Path` class
-            - Because plumbum's path objects implement the Path-like interface, they work with the built-in `open` function!
+            - For example, the plumbum library has a Path class that works differently from pathlib's `Path` class, but it has `__fspath__` method...
+            - Which means, it also work with the built-in `open` function!
+            - Thanks to this PEP 519, there are `pathlib` alternatives that works just as well as `pathlib` does
           </aside>
         </section>
 
@@ -1386,8 +1371,7 @@ print(os.path.exists(my_file))  # Works!
         <section>
           <h2>pathlib anti-patterns</h2>
           <aside class="notes" data-markdown>
-            - TODO transition?
-            - Let's talk about some things to avoid
+            - Before we conclude, I'd like to make sure to discuss a couple common mistakes that new `pathlib` users often make
           </aside>
         </section>
 
@@ -1405,9 +1389,12 @@ with <strong>open(path)</strong> as file:
           </code></pre>
           <p class="fragment">The <code>open</code> method is a relic from an earlier time</p>
           <aside class="notes" data-markdown>
-            - TODO I recommend against using the open method
-            - Use the built-in open function instead
-            - The open method only exists because open didn't accept Path objects originally
+            - The `Path` class has an `open` method
+            - Back in Python 3.5, the `open` method was the official way to get an open file out of a `Path` object
+            - The Path-like interfaces was added in Python 3.6 thanks to PEP 519, so now `Path` objects work with the built-in `open` function
+            - There is no reason to use the `open` method anymore
+            - The `open` method only exists because there were 2 versions of Python that included `pathlib`, before the `open` function worked with `pathlib`
+            - So I recommend *against* the `open` method
           </aside>
         </section>
 
@@ -1424,9 +1411,11 @@ with open(path) as f:
     content = f.read()</span>
           </code></pre>
           <aside class="notes" data-markdown>
-            - TODO Don't convert Path objects to strings unnecessarily
-            - This conversion is almost never needed
-            - Only needed for very old third-party libraries
+            - Also, don't convert `Path` objects to strings
+            - ... at least, not unless you really need to
+            - Sometimes I'll convert a `Path` to a string implicitly by using it in a `print` call or in an f-string...
+            - But only because I'm displaying the path to and end user or logging it to a file
+            - If you think you need to convert a `Path` object to a string, you probably don't
           </aside>
         </section>
 
@@ -1439,9 +1428,10 @@ with open(path) as f:
           </code></pre>
           <p class="fragment">Works whether <code>directory</code> is a string or Path object</p>
           <aside class="notes" data-markdown>
-            - TODO The Path constructor is more flexible than you might think
-            - It can take multiple arguments and will join them
-            - Works with both strings and Path objects
+            - Also, don't forget that the `Path` constructor can accept multiple arguments
+            - So if you have a directory string and a file string and you'd like to join them together, you need to make a `Path` object and then use `joinpath` or the `/` operator...
+            - You can just pass both of your strings to the `Path` class
+            - This even works if you're not sure whether one of these is already a `Path` object...
           </aside>
         </section>
 
@@ -1458,10 +1448,12 @@ with open(path) as f:
             <li class="fragment">More readable code</li>
           </ul>
           <aside class="notes" data-markdown>
-            - TODO Here are the key benefits of using pathlib
-            - More readable code that's easier to maintain
-            - No more worrying about path separator issues
-            - Better type annotations and static analysis
+            - So with pathlib...
+            - It's easy to write path-handling code that works on all operating systems
+            - Common operations are made even simpler than they were
+            - You get to avoid awkward stringly-typed code
+            - And your code will probably both more readable and easier to maintain
+            - But... there's a very common concern I hear about pathlib, that I feel is unwarranted...
           </aside>
         </section>
 
@@ -1474,13 +1466,19 @@ with open(path) as f:
           <p class="fragment">2.22 seconds when converting back to <code>pathlib.Path()</code></p>
           <p class="fragment"><strong>Don't optimize parts of your code that aren't bottlenecks</strong></p>
           <aside class="notes" data-markdown>
-            - TODO Address the performance concern
-            - Yes, pathlib can be slower than os.path for some operations
-            - But most path operations aren't in tight loops
-            - Readability usually trumps micro-optimizations
-            - TODO Concrete performance numbers from the script
-            - Use the right tool for the right job
-            - Optimize only when it matters
+            - pathlib is slow
+            - It *is* true that `pathlib` can be slower for *some* operations... **(click)**
+            - But readability is sometimes worth a small performance penaltiy
+            - I searched 4 hundred thousand files **(click)** with `os.walk` **(click)** and with the `pathlib` `walk` method **(click)**
+            - And `pathlib` wasn't any slower...
+            - Except, the `walk` method returns strings, which is a bit of cheat...
+            - When I converted all 4 hundred thousand paths back into `Path` objects in order to ask questions of them...
+            - My code slowed down
+            - Although, unless I'm actually planning to process many thousands of files, this kind of slow down is *probably* insignificant
+            - Most path operations **aren't in tight loops**
+            - Readability is usually more important than micro-optimizations
+            - Use the right tool for the right job.
+            - Optimize only when it really matters.
           </aside>
         </section>
 
@@ -1489,9 +1487,8 @@ with open(path) as f:
           <p style="font-size: 1.5em;"><q>just another way to represent paths</q></p>
           <p style="font-size: 1.5em;" class="fragment"><q>the ideal way to represent file paths</q></p>
           <aside class="notes" data-markdown>
-            - TODO This is the key mental shift
             - pathlib isn't just a different API
-            - It's about representing file paths properly as objects
+            - It's about representing file paths *properly*
           </aside>
         </section>
 
