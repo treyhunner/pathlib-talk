@@ -34,7 +34,7 @@
           <small><a href="http://treyhunner.com" rel="author">Trey Hunner</a> / <a href="https://twitter.com/treyhunner">@treyhunner</a></small>
           </p>
           <aside class="notes" data-markdown>
-            - Today I plan to convince you should stop representing your file paths as strings and starting using `Path` objects for *all* of your file paths
+            - Today I plan to convince you that you should stop representing your file paths as strings and start using `Path` objects for *all* of your file paths
           </aside>
         </section>
 
@@ -52,7 +52,7 @@
             - I run both virtual and on-site Python workshops and courses for teams
             - And I run Python Morsels, which helps Python developers of all skill levels gradually deepen their Python skills through weekly practice
             - I also share a Python tip every week through my newsletter
-            - If that sounds you're kind of thing, you can can signup at trey.io/news
+            - If that sounds like your kind of thing, you can signup at trey.io/news
           </aside>
         </section>
       </section>
@@ -134,6 +134,7 @@
           <p><code>chown(path, ...)</code></p>
           <aside class="notes" data-markdown>
             - The `shutil` has a bunch of high-level file-related stuff, including 7 different functions related to copying files
+            - TODO: Fix transition - "But representing file paths as strings can also be messy" doesn't make sense here
             - But representing file paths as strings can *also* be messy...
           </aside>
         </section>
@@ -733,7 +734,7 @@ else:
           </code></pre>
           <aside class="notes" data-markdown>
             - Here's another example comparing the `glob` module and `pathlib`
-            - Instead of **(click)** joining a path and then passing it to `iglob`, with `pathlib` we can **(click)** just call the `rglob` method on that page
+            - Instead of **(click)** joining a path and then passing it to `iglob`, with `pathlib` we can **(click)** just call the `rglob` method on that path
             - Shorter code **(click)** isn't *always* more readable, but when the shorter code has less noise it usually *is*
           </aside>
         </section>
@@ -780,14 +781,15 @@ content = Path("config.txt").read_text()
             </tr>
           </table>
           <aside class="notes" data-markdown>
-            - The methods on the `pathlib.Path` class are a bit deliberately designed than many of the other path-related functions included in Python
+            - The methods on the `pathlib.Path` class are a bit more deliberately designed than many of the other path-related functions included in Python
             - For example, compare the `pathlib.Path` class's `mkdir` method to its alternatives...
             - If you wanted to make a directory without `pathlib`, you would use either `os.mkdir` *or* `os.makedirs`, depending on whether you wanted to parent directories
             - The `mkdir` method on `Path` objects *includes* the ability to make missing parent directories, thanks to the optional `parents` keyword argument
             - The new `copy` method that `Path` objects are getting in Python 3.14 is another great example...
             - In Python 3.14, the pathlib.Path class will have a `copy` method and a `copy_into` method
             - The `copy` method is for copying files or directories to a new location whereas the `copy_into` method is for copying them *into* a different directory
-            - These 2 methods existed, you needed to reach for either `shutil.copyfile`, `shutil.copy`, `shutil.copy2`, or `shutil.copytree`... all 4 of these have slightly different uses and I always needed to read the documentation to figure out which one I needed
+            - TODO: Fix wording - should be "Before these 2 methods existed..." and show all the shutil functions
+            - Before these 2 methods existed, you needed to reach for either `shutil.copyfile`, `shutil.copy`, `shutil.copy2`, or `shutil.copytree`... all 4 of these have slightly different uses and I always needed to read the documentation to figure out which one I needed
           </aside>
         </section>
 
@@ -1134,6 +1136,7 @@ True</span>
             </tr>
           </table>
           <aside class="notes" data-markdown>
+            - TODO: Need more transitions here
             - I always found the functions in `os.path` to be unfortunately named...
             - Lots of shortened words all squashed together...
             - With pathlib, all the same functionality exists as either methods or attributes on `Path` objects
@@ -1166,7 +1169,7 @@ for filename in os.listdir(directory):
             - Something that's pretty great about `pathlib` is that you *can* gradually adopt `pathlib`
             - Path objects *should* work everywhere string paths work
             - And you can use the built-in `Path` class to make sure that the path you're working is a `Path` object and not a string
-            - Just as you can pass a any iterable to the built-in `list` function to turn it into a `list`, including the `list` type, you can also pass pass either strings *or* `Path` objects to the `Path` class to make sure you're working with a `Path` object
+            - Just as you can pass any iterable to the built-in `list` function to turn it into a `list`, including the `list` type, you can also pass either strings *or* `Path` objects to the `Path` class to make sure you're working with a `Path` object
           </aside>
         </section>
 
@@ -1285,6 +1288,7 @@ class GitPath(pathlib.Path):
             - If you need to attach metadata to a custom `Path` object, you can override the `with_segments` method **(click)** to ensure that your metadata is preserved for *any* `Path` that's *derived* from an existing `Path`
             - Whether we're joining a new path onto ours or getting a parent directory **(click)**, that `repo_root` attribute **(click)** will be maintained on the new `GitPath` objects that are generated
             - This pattern makes it pretty easy to make specialized `Path` subclasses
+            - TODO: Need more transitions here
           </aside>
         </section>
 
@@ -1308,9 +1312,11 @@ class GitPath(pathlib.Path):
             <li class="fragment">Third-party libraries use <code>os.fspath()</code> paths to strings</li>
           </ul>
           <aside class="notes" data-markdown>
+            - TODO: Need transitions in this slide too
+            - TODO: The dunder should be escaped in speaker notes
             - PEP 519 defines the Path-like protocol
             - All Path-like objects are accepted by `open`, and all other built-in path tools
-            - The only that's needed for a Path-like object is a `__fspath__` method
+            - The only thing that's needed for a Path-like object is a `__fspath__` method
             - That method will make an object work with all of Python's many path-accepting functions
             - And any third-party utility that wants to convert a Path-like object into a string can use the `os.fspath` function to do so
             - This PEP allows for a whole ecosystem of Path-like objects beyond just `pathlib`
@@ -1337,7 +1343,7 @@ with open(my_path) as f:
             - TODO add transitions to code
             - For example, here's a class called `MyPath` which *does not* inherit from `pathlib.Path`
             - And yet, this class *works* with the built-in `open` function
-            - You probably won't want to make own your `Path` object scompletely from scratch, but you might use a third-party library that *does*
+            - You probably won't want to make your own `Path` object completely from scratch, but you might use a third-party library that *does*
           </aside>
         </section>
 
@@ -1359,8 +1365,8 @@ print(os.path.exists(my_file))  # Works!
           </code></pre>
           <aside class="notes" data-markdown>
             - For example, the plumbum library has a Path class that works differently from pathlib's `Path` class, but it has `__fspath__` method...
-            - Which means, it also work with the built-in `open` function!
-            - Thanks to this PEP 519, there are `pathlib` alternatives that works just as well as `pathlib` does
+            - Which means, it also works with the built-in `open` function!
+            - Thanks to this PEP 519, there are `pathlib` alternatives that work just as well as `pathlib` does
           </aside>
         </section>
 
@@ -1391,7 +1397,7 @@ with <strong>open(path)</strong> as file:
           <aside class="notes" data-markdown>
             - The `Path` class has an `open` method
             - Back in Python 3.5, the `open` method was the official way to get an open file out of a `Path` object
-            - The Path-like interfaces was added in Python 3.6 thanks to PEP 519, so now `Path` objects work with the built-in `open` function
+            - The Path-like interface was added in Python 3.6 thanks to PEP 519, so now `Path` objects work with the built-in `open` function
             - There is no reason to use the `open` method anymore
             - The `open` method only exists because there were 2 versions of Python that included `pathlib`, before the `open` function worked with `pathlib`
             - So I recommend *against* the `open` method
@@ -1414,7 +1420,7 @@ with open(path) as f:
             - Also, don't convert `Path` objects to strings
             - ... at least, not unless you really need to
             - Sometimes I'll convert a `Path` to a string implicitly by using it in a `print` call or in an f-string...
-            - But only because I'm displaying the path to and end user or logging it to a file
+            - But only because I'm displaying the path to an end user or logging it to a file
             - If you think you need to convert a `Path` object to a string, you probably don't
           </aside>
         </section>
@@ -1429,9 +1435,10 @@ with open(path) as f:
           <p class="fragment">Works whether <code>directory</code> is a string or Path object</p>
           <aside class="notes" data-markdown>
             - Also, don't forget that the `Path` constructor can accept multiple arguments
-            - So if you have a directory string and a file string and you'd like to join them together, you need to make a `Path` object and then use `joinpath` or the `/` operator...
+            - So if you have a directory string and a file string and you'd like to join them together, you don't need to make a `Path` object and then use `joinpath` or the `/` operator...
             - You can just pass both of your strings to the `Path` class
             - This even works if you're not sure whether one of these is already a `Path` object...
+            - TODO: Need another transition here
           </aside>
         </section>
 
@@ -1468,7 +1475,7 @@ with open(path) as f:
           <aside class="notes" data-markdown>
             - pathlib is slow
             - It *is* true that `pathlib` can be slower for *some* operations... **(click)**
-            - But readability is sometimes worth a small performance penaltiy
+            - But readability is sometimes worth a small performance penalty
             - I searched 4 hundred thousand files **(click)** with `os.walk` **(click)** and with the `pathlib` `walk` method **(click)**
             - And `pathlib` wasn't any slower...
             - Except, the `walk` method returns strings, which is a bit of cheat...
