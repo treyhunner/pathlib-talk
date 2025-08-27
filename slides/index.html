@@ -65,19 +65,19 @@
         <section>
           <h2>Problems with pathlib alternatives</h2>
           <ul style="list-style: none; font-size: 1.2em; line-height: 1.5;">
-            <li>☐ Utilities are difficult to find</li>
-            <li>☐ Utilities are awkward to use</li>
-            <li>☐ String paths are error-prone</li>
-            <li>☐ Hard to distinguish paths from other strings</li>
+            <li class="fragment">☐ Utilities are difficult to find</li>
+            <li class="fragment">☐ Utilities are awkward to use</li>
+            <li class="fragment">☐ String paths are error-prone</li>
+            <li class="fragment">☐ Hard to distinguish paths from other strings</li>
           </ul>
           <aside class="notes" data-markdown>
             - There are 4 reasons I recommend using pathlib:
               - The alternatives to pathlib are:
-                - difficult to find
-                - awkward to use
-              - Representing file paths as strings:
-                - requires deliberate effort for bug-free code
-                - makes it harder to distinguish between a path and any other string
+                - **(click)** difficult to *find*
+                - **(click)** difficult to *use*
+              - Also, representing file paths as strings:
+                - **(click)** requires *deliberate* effort to *avoid* writing buggy code
+                - **(click)** and path strings make it harder to distinguish between *a path* and **any other string**
             - I'd like to address each of these before we take a look at pathlib
           </aside>
         </section>
@@ -118,11 +118,11 @@
           <p><code>glob</code></p>
           <p><code>shutil</code></p>
           <aside class="notes" data-markdown>
-            - When we need to work with file paths, we reach for one of these 4 standard library modules...
-            - The `os` package
-            - The `os.path` submodule
-            - The `glob` module
-            - And the `shutil` module
+            - When we need to work with file paths, there are 4 standard library modules we might reach for...
+            - `os`
+            - `os.path`
+            - `glob`
+            - And `shutil`
           </aside>
         </section>
 
@@ -135,9 +135,8 @@
           <p><code>rmtree(path)</code></p>
           <p><code>chown(path, ...)</code></p>
           <aside class="notes" data-markdown>
-            - The `shutil` has a bunch of high-level file-related stuff, including 7 different functions related to copying files
-            - TODO: Fix transition - "But representing file paths as strings can also be messy" doesn't make sense here
-            - But representing file paths as strings can *also* be messy...
+            - The `shutil` module has a bunch of high-level file-related stuff, including **(click)** 7 *different* functions for copying files and directories
+            - *(Maybe?)* After this talk, the first person who can tell me which one to use in which circumstance gets a rubber duck...
           </aside>
         </section>
 
@@ -150,7 +149,7 @@
           <aside class="notes" data-markdown>
             - The `glob` module is much simpler
             - There's `glob`, `iglob`, and 2 other functions
-            - You'd use this module if you needed to find files based on a wildcard pattern
+            - TODO cut this? You'd use this module if you needed to find files based on a wildcard pattern
           </aside>
         </section>
 
@@ -162,41 +161,42 @@
           <p><code>splitext(path)</code>, <code>getsize(path)</code></p>
           <p><code>relpath(path, parent)</code>, <code>join(parent, name)</code></p>
           <aside class="notes" data-markdown>
-            - The `os.path` module includes a bunch of utilites for manipulating file paths
-            - Splitting file paths apart, joining them together, and asking questions of file paths
+            - The `os.path` module is for manipulating file paths
+            - Splitting paths apart, joining them together, and generally *asking questions* of path strings
           </aside>
         </section>
 
         <section>
           <h1 class="fragment" data-fragment-index=2>Python's Junk Drawers</h1>
-          <h2 class="fragment" data-fragment-index=1 style="display: inline; margin-right: 2em;"><code>os</code></h2>
+          <h2 style="display: inline; margin-right: 2em;"><code>os</code></h2>
           <h2 class="fragment" data-fragment-index=1 style="display: inline;"><code>sys</code></h2>
           <h3 class="fragment" data-fragment-index=2 style="margin-top: 1em;">🔑🖇️✏️🧷</h3>
           <aside class="notes" data-markdown>
-            - The `os` module is a bit more complicated than those other 3 modules...
+            - The `os` module is a bit more complicated...
             - The Python standard library has 2 modules **(click)**...
             - That act as *junk drawers* **(click)**: the `os` module and the `sys` module
-            - The `sys` module is for stuff related to the Python interpreter that don't have a more appropriate home
-            - The `os` module is for stuff generally related to your computer which doesn't have a more appropriate home
-            - Python stores *a lot* of file-related stuff in the `os` module...
+            - The `sys` module the Python interpreter junk drawer
+            - The `os` module is the operating system junk drawer
+            - The `os` module has a of file-related stuff *and* a bunch of other stuff
           </aside>
         </section>
 
         <section>
-          <p><code>os.getcwd()</code>, <code>os.chdir()</code></p>
-          <p><code>os.chmod()</code></p>
-          <p><code>os.symlink()</code>, <code>os.link()</code>, <code>os.readlink()</code></p>
-          <p><code>os.stat()</code>, <code>os.lstat()</code></p>
-          <p><code>os.scandir()</code>, <code>os.walk()</code></p>
-          <p><code>os.rename()</code>, <code>os.replace()</code>, <code>os.remove()</code></p>
-          <p><code>os.mkdir()</code>, <code>os.makedirs()</code></p>
+          <p class="fragment"><code>os.getcwd()</code>, <code>os.chdir()</code></p>
+          <p class="fragment"><code>os.chmod()</code></p>
+          <p class="fragment"><code>os.symlink()</code>, <code>os.link()</code>, <code>os.readlink()</code></p>
+          <p class="fragment"><code>os.stat()</code>, <code>os.lstat()</code></p>
+          <p class="fragment"><code>os.scandir()</code>, <code>os.walk()</code></p>
+          <p class="fragment"><code>os.rename()</code>, <code>os.replace()</code>, <code>os.remove()</code></p>
+          <p class="fragment"><code>os.mkdir()</code>, <code>os.makedirs()</code></p>
           <aside class="notes" data-markdown>
-            - There are utilities for getting the current working directory and for changing it
-            - For changing the modes of a file or directory
-            - Stuff for working with both symbolic links and hard links
-            - Utilities for traversing the file system
-            - Utilities for renaming and replacing files
-            - And utilities for making directories
+            - There are **(click)** utilities for getting the current working directory and for changing it
+            - For **(click)** changing the mode of a file
+            - Stuff for **(click)** working with symbolic links and hard links
+            - Utilities for **(click)** traversing the file system
+            - Utilities for **(click)** renaming and replacing files
+            - *And* utilities for **(click)** making directories
+            - ...
             - These are most of the file-related utilities in Python's `os`
             - But this is *not* everything that's *in* the `os` module...
             - There's also all this...
@@ -454,7 +454,8 @@
           <aside class="notes" data-markdown>
             - My point in dumping out the contents the `os` junk drawer
             - Is to point out how difficult it can be to *find* the dozen-ish file-related utilities that are *in* the `os` module
-            - And these are just the utilities that live in the `os` module...
+            - And these are just the file-related utilities that live in the `os` module...
+            - This doesn't everything in `os.path`, `shutil`, and `glob`...
           </aside>
         </section>
 
@@ -477,9 +478,9 @@
           <code style="white-space: nowrap;">os.path.relpath(path, parent)</code>, <code style="white-space: nowrap;">os.path.join(parent, name)</code>,
           <code>glob.glob(pattern)</code>
           <aside class="notes" data-markdown>
-            - These are *most* of the useful path-related utilities included in Python...
-            - I removed about 10 less frequently used functions that didn't fit on this slide
-            - Back in 2015, in Python 2.7, we *had* to go hunting for these utilities when needed them
+            - These are *most* of the useful path-related utilities included in Python's `os`, `os.path`, `shutil`, and `glob` modules...
+            - I say *most* because I removed about 10 less frequently used functions that didn't fit on this slide
+            - Back in 2015, in Python 2.7, our only option when working with file paths was to  go hunting for these utilities when needed them
           </aside>
         </section>
 
@@ -492,7 +493,9 @@
             <li>☐ Hard to distinguish paths from other strings</li>
           </ul>
           <aside class="notes" data-markdown>
-            - So, the alternatives to pathlib are difficult to find
+            - So, I think we can agree that the various path-related utilities scattered throughout the Python standard library are...
+            - *difficult* to find
+            - ...
             - But do we even need all these utility functions?
           </aside>
         </section>
@@ -502,6 +505,13 @@
       <!-- SECTION: Why even use os.path? -->
       <!-- 2 minutes -->
       <section>
+
+        <section>
+          <h2><code>os.path</code> versus string operations</h2>
+          <aside class="notes" data-markdown>
+            - If we're representing file paths as strings... couldn't we just manipulate the strings with string operations?
+          </aside>
+        </section>
 
         <section>
           <pre class="python"><code data-trim data-noescape style="font-size: 95%">
@@ -527,11 +537,11 @@ TEMPLATES_DIR = BASE_DIR  + os.sep + "templates"
             - This code sets `BASE_DIR` to the directory above the current file's directory
             - And it sets `TEMPLATES_DIR` to the templates subdirectory within that base directory
             - But these file paths are just strings...
-            - So instead of using `os.path.dirname` and `os.path.join`, couldn't we just use the string `rsplit` method and string concatenation?
+            - So instead of using `os.path.dirname` and `os.path.join`, **(click)** couldn't we just use the string `rsplit` method and string concatenation?
             - Well, this code *is* shorter, but it's probably buggy on Windows, which prefers backslashes as path separators instead of forward slashes
             - We *could* have relied on `os.sep` **(click)** to determine which path separator to use based on our operating system
-            - But I think *this code* is *less readable* than version that used the `os.path` utilities
-            - Also...
+            - But I think *this code* is *less readable* than the `os.path` version that we started with.
+            - Also, depending on where our path came from, ...
           </aside>
         </section>
 
@@ -541,7 +551,7 @@ TEMPLATES_DIR = BASE_DIR  + os.sep + "templates"
           C:\Documents\ever\seen/a path/like this.txt
           </code></pre>
           <aside class="notes" data-markdown>
-            - depending on where our path came from, we might accidentally end up with a mix of forward slashes and back slashes, which is technically valid on Windows but it also looks really weird
+            - ...we might accidentally end up with a mix of forward slashes and back slashes, which is technically valid on Windows but it also looks really weird
             - When file paths are strings... there's a very real temptation to call string methods, use concatenation, and use string slicing
             - But performing string manipulations on path strings can get us in trouble
           </aside>
@@ -556,7 +566,7 @@ TEMPLATES_DIR = BASE_DIR  + os.sep + "templates"
             <li>☐ Hard to distinguish paths from other strings</li>
           </ul>
           <aside class="notes" data-markdown>
-            - So using strings to represent paths can easily lead to bugs if we're very careful in the way we work those strings
+            - So using strings to represent paths can easily lead to bugs unless we're *very careful* in the way we work those strings
           </aside>
         </section>
 
@@ -570,8 +580,8 @@ TEMPLATES_DIR = BASE_DIR  + os.sep + "templates"
           <aside class="notes" data-markdown>
             - Python's various utilites for manipulating file paths *are* useful
             - But if we forget to use them, and instead treat our path strings just like any other string, it's easy to accidentally write buggy code that doesn't work across multiple operating systems
-            - Potential bugs aren't the only issue though...
-            - representing file paths as strings can be messy for other reasons...
+            - ...
+            - But potential bugs aren't the only issue with with representing paths as strings...
           </aside>
         </section>
 
@@ -704,7 +714,6 @@ BASE_DIR = Path(__file__).<span class="fragment bold-current" data-fragment-inde
 TEMPLATES_DIR = BASE_DIR / "templates"
           </code></pre>
           <aside class="notes" data-markdown>
-            - TODO fix transitions
             - This code was taken from a Django project...
             - And it represents paths using strings
             - I find that I need to read this code inside out: we get the absolute path **(click)**, then the parent directory **(click)**, and then get its parent directory. **(click)**
@@ -1177,6 +1186,7 @@ for filename in os.listdir(directory):
           </code></pre>
           <p class="fragment">The Path class accepts strings <em>and</em> other Path objects</p>
           <aside class="notes" data-markdown>
+            - TODO consider cutting this
             - TODO fix transitions
             - Something that's pretty great about `pathlib` is that you *can* gradually adopt `pathlib`
             - Path objects *should* work everywhere string paths work
@@ -1267,6 +1277,7 @@ class BetterPath(pathlib.Path):
                     raise</span>
           </code></pre>
           <aside class="notes" data-markdown>
+            - TODO consider removing this slide and just showing the one after
             - TODO fix transitions
             - If you wanted to add a `common_prefix` method because you miss that function from `os.path`, you can make your own `Path` class that has it!
             - You can also enhance the functionality of *existing* methods
