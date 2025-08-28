@@ -1207,65 +1207,6 @@ True</span>
           </aside>
         </section>
 
-        <!--
-        <section>
-          <h3>Gradual adoption</h3>
-          <pre class="python"><code data-trim data-noescape>
-# Start by converting at function boundaries
-def process_config(config_path):
-    path = Path(config_path)  # Works with strings OR Path objects
-    return path.read_text()
-
-# Legacy code still works
-old_function("/path/to/config.txt")
-new_function(Path("config.txt"))
-
-# Mix and match as you migrate
-for filename in os.listdir(directory):
-    file_path = Path(directory) / filename  # pathlib joining
-    if file_path.suffix == '.py':           # pathlib properties
-        with open(file_path) as f:          # builtin functions accept Path
-            content = f.read()
-          </code></pre>
-          <p class="fragment">The Path class accepts strings <em>and</em> other Path objects</p>
-          <aside class="notes" data-markdown>
-            - TODO consider cutting this
-            - TODO fix transitions
-            - Something that's pretty great about `pathlib` is that you *can* gradually adopt `pathlib`
-            - Path objects *should* work everywhere string paths work
-            - And you can use the built-in `Path` class to make sure that the path you're working is a `Path` object and not a string
-            - Just as you can pass any iterable to the built-in `list` function to turn it into a `list`, including the `list` type, you can also pass either strings *or* `Path` objects to the `Path` class to make sure you're working with a `Path` object
-          </aside>
-        </section>
-        -->
-
-        <!--
-        <section>
-          <h3>Using <code>pathlib.Path</code> with <code>argparse</code></h3>
-          <pre class="python"><code data-trim data-noescape style="font-size: 90%">
-# For immediate file opening:
-parser.add_argument("input", type=argparse.FileType("r"))
-# args.input is already an open file object
-
-<span class="fragment"># For flexible path handling:
-parser.add_argument("path", type=Path)
-# args.path is a Path object
-
-if args.path.is_dir():
-    ...  # Directory given
-elif args.path.is_file():
-    ...  # Existing file given
-else:
-    ...  # Path doesn't represent a file or a directory!</span>
-          </code></pre>
-          <aside class="notes" data-markdown>
-            - TODO Two different approaches for different use cases
-            - FileType for immediate opening
-            - Path type for flexible path handling
-          </aside>
-        </section>
-        -->
-
       </section>
 
       <!-- SECTION: This isn't just about pathlib -->
@@ -1300,41 +1241,6 @@ class BetterPath(pathlib.Path):
             - You'll just inherit from `pathlib.Path` and then **(click)** use your own custom `BetterPath` class the same way you'd use the `pathlib.Path` class
           </aside>
         </section>
-
-        <!--
-        <section>
-          <h3>More extension examples</h3>
-          <pre class="python"><code data-trim data-noescape style="font-size: 75%">
-# Add common_prefix functionality
-class BetterPath(pathlib.Path):
-    def common_prefix(self, other):
-        return self.with_segments(os.path.commonprefix((self, other)))
-
-<span class="fragment"># Enhanced rmdir with recursive option
-class BetterPath(pathlib.Path):
-    def rmdir(self, *, recursive=False, ignore_errors=False):
-        if recursive:
-            shutil.rmtree(self, ignore_errors=ignore_errors)
-        else:
-            try:
-                super().rmdir()
-            except Exception:
-                if not ignore_errors:
-                    raise</span>
-          </code></pre>
-          <aside class="notes" data-markdown>
-            - TODO: Add transition here and show using the custom class examples
-            - TODO consider removing this slide and just showing the one after
-            - TODO fix transitions
-            - If you wanted to add a `common_prefix` method because you miss that function from `os.path`, you can make your own `Path` class that has it!
-            - You can also enhance the functionality of *existing* methods
-            - For example, if you wanted to allow the `rmdir` method to delete non-empty directories, you could override the `rmdir` method
-            - Note the `with_segments` method call in that `common_prefix` method...
-            - That's the way for subclasses of `Path` to return new `Path` objects of the *same* type
-            - But that method can *also* be helpful to override...
-          </aside>
-        </section>
-        -->
 
         <section>
           <pre class="python fragment" data-fragment-index=3><code data-trim data-noescape style="font-size: 70%">
@@ -1430,31 +1336,6 @@ with <span class="fragment bold">open(my_path)</span> as file:
             - The ability to make an object that *acts* like a path allows for third-party libraries that work everywhere that `pathlib` does
           </aside>
         </section>
-
-        <!--
-        <section>
-          <h3>Real third-party example: plumbum</h3>
-          <pre class="python"><code data-trim data-noescape>
-from plumbum import local
-
-# This is a plumbum Path, not a pathlib Path
-my_file = local.path("example.txt")
-
-# But it works with open() because it has __fspath__
-with open(my_file) as f:
-    content = f.read()
-
-# It also works with os.path functions
-import os.path
-print(os.path.exists(my_file))  # Works!
-          </code></pre>
-          <aside class="notes" data-markdown>
-            - For example, the plumbum library has a Path class that works differently from pathlib's `Path` class, but it has `__fspath__` method...
-            - Which means, it also works with the built-in `open` function!
-            - Thanks to this PEP 519, there are `pathlib` alternatives that work just as well as `pathlib` does
-          </aside>
-        </section>
-        -->
 
       </section>
 
@@ -1592,6 +1473,9 @@ with open(path) as f:
             - It's about representing file paths *properly*
           </aside>
         </section>
+      </section>
+
+      <section>
 
         <!-- Thank you slide -->
         <section style="text-align: left;" data-background="#663399" data-background-transition="slide" data-transition="slide">
@@ -1612,6 +1496,113 @@ with open(path) as f:
             - Thank you
           </aside>
         </section>
+
+        <section>
+          <h3>Gradual adoption</h3>
+          <pre class="python"><code data-trim data-noescape>
+# Start by converting at function boundaries
+def process_config(config_path):
+    path = Path(config_path)  # Works with strings OR Path objects
+    return path.read_text()
+
+# Legacy code still works
+old_function("/path/to/config.txt")
+new_function(Path("config.txt"))
+
+# Mix and match as you migrate
+for filename in os.listdir(directory):
+    file_path = Path(directory) / filename  # pathlib joining
+    if file_path.suffix == '.py':           # pathlib properties
+        with open(file_path) as f:          # builtin functions accept Path
+            content = f.read()
+          </code></pre>
+          <p class="fragment">The Path class accepts strings <em>and</em> other Path objects</p>
+          <aside class="notes" data-markdown>
+            - Something that's pretty great about `pathlib` is that you *can* gradually adopt `pathlib`
+            - Path objects *should* work everywhere string paths work
+            - And you can use the built-in `Path` class to make sure that the path you're working is a `Path` object and not a string
+            - Just as you can pass any iterable to the built-in `list` function to turn it into a `list`, including the `list` type, you can also pass either strings *or* `Path` objects to the `Path` class to make sure you're working with a `Path` object
+          </aside>
+        </section>
+
+        <section>
+          <h3>Using <code>pathlib.Path</code> with <code>argparse</code></h3>
+          <pre class="python"><code data-trim data-noescape style="font-size: 90%">
+# For immediate file opening:
+parser.add_argument("input", type=argparse.FileType("r"))
+# args.input is already an open file object
+
+<span class="fragment"># For flexible path handling:
+parser.add_argument("path", type=Path)
+# args.path is a Path object
+
+if args.path.is_dir():
+    ...  # Directory given
+elif args.path.is_file():
+    ...  # Existing file given
+else:
+    ...  # Path doesn't represent a file or a directory!</span>
+          </code></pre>
+          <aside class="notes" data-markdown>
+            - (Two different approaches for different use cases)
+            - FileType for immediate opening
+            - Path type for flexible path handling
+          </aside>
+        </section>
+
+        <section>
+          <h3>More extension examples</h3>
+          <pre class="python"><code data-trim data-noescape style="font-size: 75%">
+# Add common_prefix functionality
+class BetterPath(pathlib.Path):
+    def common_prefix(self, other):
+        return self.with_segments(os.path.commonprefix((self, other)))
+
+<span class="fragment"># Enhanced rmdir with recursive option
+class BetterPath(pathlib.Path):
+    def rmdir(self, *, recursive=False, ignore_errors=False):
+        if recursive:
+            shutil.rmtree(self, ignore_errors=ignore_errors)
+        else:
+            try:
+                super().rmdir()
+            except Exception:
+                if not ignore_errors:
+                    raise</span>
+          </code></pre>
+          <aside class="notes" data-markdown>
+            - If you wanted to add a `common_prefix` method because you miss that function from `os.path`, you can make your own `Path` class that has it!
+            - You can also enhance the functionality of *existing* methods
+            - For example, if you wanted to allow the `rmdir` method to delete non-empty directories, you could override the `rmdir` method
+            - Note the `with_segments` method call in that `common_prefix` method...
+            - That's the way for subclasses of `Path` to return new `Path` objects of the *same* type
+            - But that method can *also* be helpful to override...
+          </aside>
+        </section>
+
+        <section>
+          <h3>Real third-party example: plumbum</h3>
+          <pre class="python"><code data-trim data-noescape>
+from plumbum import local
+
+# This is a plumbum Path, not a pathlib Path
+my_file = local.path("example.txt")
+
+# But it works with open() because it has __fspath__
+with open(my_file) as f:
+    content = f.read()
+
+# It also works with os.path functions
+import os.path
+print(os.path.exists(my_file))  # Works!
+          </code></pre>
+          <aside class="notes" data-markdown>
+            - For example, the plumbum library has a Path class that works differently from pathlib's `Path` class, but it has `__fspath__` method...
+            - Which means, it also works with the built-in `open` function!
+            - Thanks to this PEP 519, there are `pathlib` alternatives that work just as well as `pathlib` does
+          </aside>
+        </section>
+
       </section>
 
       </div>
