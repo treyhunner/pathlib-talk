@@ -36,8 +36,7 @@
           <small><a href="http://treyhunner.com" rel="author">Trey Hunner</a> / <a href="https://twitter.com/treyhunner">@treyhunner</a></small>
           </p>
           <aside class="notes" data-markdown>
-            - TODO: Change this to mention pathlib specifically
-            - Today I plan to convince you that you should stop representing your file paths as strings and start using `Path` objects for *all* of your file paths
+            - Today I plan to convince you that you should stop representing your file paths as strings and start using `pathlib` for *all* of your file paths
           </aside>
         </section>
 
@@ -64,22 +63,36 @@
       <section>
 
         <section>
-          <h2>Problems with pathlib alternatives</h2>
+          <pre class="python"><code data-trim data-noescape style="font-size: 130%; padding: 0.75em;">
+>>> path = "/home/trey/Documents/some_file.txt"
+          </code></pre>
+          <aside class="notes" data-markdown>
+            - For most of Python's history, file paths were represented by strings
+            - This still works today and it always will
+            - ...
+            - Before we really discuss `pathlib`, I'd like to talk about why *this* can be messy
+          </aside>
+        </section>
+
+        <section>
+          <h2>Problems with <em>not</em> using pathlib</h2>
           <ul style="list-style: none; font-size: 1.2em; line-height: 1.5;">
-            <li class="fragment">☐ Utilities are difficult to find</li>
-            <li class="fragment">☐ Utilities are awkward to use</li>
-            <li class="fragment">☐ String paths are error-prone</li>
-            <li class="fragment">☐ Hard to distinguish paths from other strings</li>
+            <li class="fragment" data-fragment-index=1>☐ <span class="fragment" data-fragment-index=3>Utilities are difficult to find</span></li>
+            <li class="fragment" data-fragment-index=1>☐ <span class="fragment" data-fragment-index=4>Utilities are awkward to use</span></li>
+            <li class="fragment" data-fragment-index=2>☐ <span class="fragment" data-fragment-index=5>String paths are error-prone</span></li>
+            <li class="fragment" data-fragment-index=2>☐ <span class="fragment" data-fragment-index=6>Hard to distinguish paths from other strings</span></li>
           </ul>
           <aside class="notes" data-markdown>
-            - There are 4 reasons I recommend using pathlib:
-              - The alternatives to pathlib are:
-                - **(click)** difficult to *find*
-                - **(click)** difficult to *use*
-              - Also, representing file paths as strings:
-                - **(click)** requires *deliberate* effort to *avoid* writing buggy code
-                - **(click)** and path strings make it harder to distinguish between *a path* and **any other string**
-            - I'd like to address each of these before we take a look at pathlib
+            - There are 4 reasons I recommend using pathlib.
+            - 2 of them **(click)** are about the various utilities that pathlib competes with
+            - And 2 of them **(click)** are about the problem with representing file paths as strings
+            - The alternatives to pathlib are:
+              - **(click)** difficult to *find*
+              - **(click)** difficult to *use*
+            - Also, representing file paths as strings:
+              - **(click)** requires *deliberate* effort to *avoid* writing buggy code
+              - **(click)** and path strings make it harder to distinguish between *a path* and **any other string**
+            - I'd like to address each of these before we talk about pathlib itself
           </aside>
         </section>
 
@@ -172,27 +185,23 @@
           <h3 class="fragment" data-fragment-index=2 style="margin-top: 1em;">🔑🖇️✏️🧷</h3>
           <aside class="notes" data-markdown>
             - The `os` module is a bit more complicated...
-            - TODO: Fix speaker notes - 'sys module is the Python interpreter junk drawer'
-            - TODO: Fix speaker note - 'os module has a lot of file-related stuff'
             - The Python standard library has 2 modules **(click)**...
             - That act as *junk drawers* **(click)**: the `os` module and the `sys` module
-            - The `sys` module the Python interpreter junk drawer
+            - The `sys` module is the Python interpreter junk drawer
             - The `os` module is the operating system junk drawer
-            - The `os` module has a of file-related stuff *and* a bunch of other stuff
+            - The `os` module has lots a of file-related stuff *and* a bunch of other stuff
           </aside>
         </section>
 
         <section>
-          <p class="fragment"><code>os.getcwd()</code>, <code>os.chdir()</code></p>
-          <p class="fragment"><code>os.chmod()</code></p>
-          <p class="fragment"><code>os.symlink()</code>, <code>os.link()</code>, <code>os.readlink()</code></p>
-          <p class="fragment"><code>os.stat()</code>, <code>os.lstat()</code></p>
-          <p class="fragment"><code>os.scandir()</code>, <code>os.walk()</code></p>
-          <p class="fragment"><code>os.rename()</code>, <code>os.replace()</code>, <code>os.remove()</code></p>
-          <p class="fragment"><code>os.mkdir()</code>, <code>os.makedirs()</code></p>
+          <p class="fragment" data-fragment-index=1><code>os.getcwd()</code>, <code>os.chdir()</code></p>
+          <p class="fragment" data-fragment-index=2><code>os.chmod()</code></p>
+          <p class="fragment" data-fragment-index=3><code>os.symlink()</code>, <code>os.link()</code>, <code>os.readlink()</code></p>
+          <p class="fragment" data-fragment-index=4><code>os.stat()</code>, <code>os.lstat()</code></p>
+          <p class="fragment" data-fragment-index=4><code>os.scandir()</code>, <code>os.walk()</code></p>
+          <p class="fragment" data-fragment-index=5><code>os.rename()</code>, <code>os.replace()</code>, <code>os.remove()</code></p>
+          <p class="fragment" data-fragment-index=6><code>os.mkdir()</code>, <code>os.makedirs()</code></p>
           <aside class="notes" data-markdown>
-            - TODO: Fix the transitions here
-            - TODO: Fix speaker note about file-related utilities in Python's OS module
             - There are **(click)** utilities for getting the current working directory and for changing it
             - For **(click)** changing the mode of a file
             - Stuff for **(click)** working with symbolic links and hard links
@@ -481,10 +490,9 @@
           <code style="white-space: nowrap;">os.path.relpath(path, parent)</code>, <code style="white-space: nowrap;">os.path.join(parent, name)</code>,
           <code>glob.glob(pattern)</code>
           <aside class="notes" data-markdown>
-            - TODO: Fix speaker note about going hunting for utilities
             - These are *most* of the useful path-related utilities included in Python's `os`, `os.path`, `shutil`, and `glob` modules...
             - I say *most* because I removed about 10 less frequently used functions that didn't fit on this slide
-            - Back in 2015, in Python 2.7, our only option when working with file paths was to  go hunting for these utilities when needed them
+            - In Python 2, the only option when working with file paths was to go hunting for these utilities when we needed them
           </aside>
         </section>
 
@@ -511,7 +519,7 @@
       <section>
 
         <section>
-          <h2><code>os.path</code> versus string operations</h2>
+          <h2><strong><code>os.path</code></strong> versus <strong>string operations</strong></h2>
           <aside class="notes" data-markdown>
             - If we're representing file paths as strings... couldn't we just manipulate the strings with string operations?
           </aside>
@@ -583,10 +591,9 @@ TEMPLATES_DIR = BASE_DIR  + os.sep + "templates"
             <li>☐ Hard to distinguish paths from other strings</li>
           </ul>
           <aside class="notes" data-markdown>
-            - TODO: Fix speaker notes about potential bugs not being the only issue
             - So using strings to represent paths can easily lead to bugs unless we're *very careful* to use the proper *path manipulation* tools
             - ...
-            - But potential bugs aren't the only issue with with representing paths as strings...
+            - But potential bugs aren't the only issue with representing paths as strings...
           </aside>
         </section>
 
@@ -599,7 +606,6 @@ TEMPLATES_DIR = BASE_DIR  + os.sep + "templates"
           <h1>Stringly Typed Code</h1>
           <p class="fragment">passes strings around when a better type exists</p>
           <aside class="notes" data-markdown>
-            - TODO: Need transitions on this slide
             - Stringly-typed code **(click)** is code that passes strings around when a *better* type exists
           </aside>
         </section>
@@ -622,7 +628,7 @@ if target.year == 2025:
           </code></pre>
           <aside class="notes" data-markdown>
             - This code is stringly-typed: it uses a string to represent a date
-            - This code uses a `datetime.date` object to represent a `date` instead
+            - **(click)** This code uses the `datetime` module to represent a `date` instead
             - I prefer this second block of code. It's a bit easier to work with date objects than with strings *and* we automatically get a bit more certainty about whether the data we're working with might be invalid.
           </aside>
         </section>
@@ -702,10 +708,9 @@ def find_editorconfig_file() -> Path:
       <section>
 
         <section>
-          <h2>String paths versus <code>Path</code> objects</h2>
+          <h2><strong>String paths</strong> versus <strong><code>Path</code></strong> objects</h2>
           <aside class="notes" data-markdown>
-            - TODO: Fix speaker notes - should say "represents paths as strings" not "represents strings as paths"
-            - Let's compare the readability of code that represents strings as paths to the same code that uses `pathlib.Path` objects
+            - Let's compare the readability of code that represents paths as strings to the same code that uses `pathlib.Path` objects
           </aside>
         </section>
 
@@ -727,9 +732,9 @@ TEMPLATES_DIR = BASE_DIR / "templates"
             - Instead of this code which uses strings for paths, I prefer **(click)** this code
             - This code represents paths using `pathlib.Path` objects
             - I read *this* from left-to-right: we **(click)** resolve the path into an absolute path, get **(click)** the parent directory, and get **(click)** its parent directory.
-            - TODO: Fix speaker notes here about nested function calls
-            - When using strings as paths, **(click)** we need to use nested function calls that, but when using `Path` objects we can use chained method calls and attribute accesses.
-            - I think the pathlib version reads much more naturally
+            - When using strings as paths, **(click)** we need to use **nested function calls**
+            - but when using `Path` objects we can use **chained method calls and attribute accesses**.
+            - Personally, I think the pathlib version reads much more naturally
           </aside>
         </section>
 
@@ -771,10 +776,9 @@ with open("config.txt", mode="rt") as file:
 content = Path("config.txt").read_text()
           </code></pre>
           <aside class="notes" data-markdown>
-            - TODO: Update speaker notes here to add "on a path object" after "read_text method"
             - I very often need to open a file, read the whole contents of the file into a string, and then close the file
             - With `pathlib`, there's a convenience method for that **(click)**
-            - Instead of using the `open` function, we could just call the `read_text` method
+            - Instead of using the `open` function, we could just call the `read_text` method on a `Path` object
           </aside>
         </section>
 
@@ -842,7 +846,7 @@ content = Path("config.txt").read_text()
       <!-- 4 minutes -->
       <section>
         <section>
-          <h2>How does it work?</h2>
+          <h2>How does <code>pathlib</code> work?</h2>
           <aside class="notes" data-markdown>
             - But how does `pathlib` actually work?
             - Well, the `pathlib` module contains pretty much one thing...
@@ -862,10 +866,9 @@ PosixPath('.editorconfig')
             - ...a class called `Path`
             - So to understanding `pathlib` means understanding `Path` objects and the `Path` class
             - The `Path` class **(click)** accepts a string which represents a file path and returns a new `Path` object
-            - The `Path` object you get will either be **(click)** a `PosixPath` or a `WindowsPath`, depending on the operating system that the code is running on
+            - The `Path` object we get will either be **(click)** a `PosixPath` or a `WindowsPath`, depending on the operating system that the code is running on
             - Both types support all the same features, but they normalize paths differently
-            - TODO: Update speaker notes to use 'we' instead of 'you' pronouns consistently
-            - You don't need to worry about any of that because the `Path` object you get should work the way you'd expect it to on the operating system you're using
+            - We don't need to worry about any of that because the `Path` object we get should work just the way we'd expect it to on whatever operating system the code is running on
           </aside>
         </section>
 
@@ -914,8 +917,7 @@ PosixPath('.editorconfig')
           </span>
           </p>
           <aside class="notes" data-markdown>
-            - TODO: Update speaker notes here to add "much" - "This is pretty much all of the useful features"
-            - This is pretty all of the useful features that the `Path` class supports
+            - This is pretty much all of the useful features that the `Path` class supports
             - Most of these are **(click)** methods that you can call on individual `Path` objects
             - Some of these are **(click)** attributes of the `Path` objects
             - And 2 of these are **(click)** class methods: one returns the current working directory and the other returns the user's home directory
@@ -967,22 +969,26 @@ PosixPath('.editorconfig')
 
         <section>
           <pre class="python fragment"><code data-trim data-noescape>
+from pathlib import Path
+
 path = Path("example.txt")
 with open(<span class="fragment bold">str(path)</span>) as f:
     content = f.read()
           </code></pre>
           <pre class="python fragment"><code data-trim data-noescape>
+from pathlib import Path
+
 path = Path("example.txt")
 with open(<strong>path</strong>) as f:
     content = f.read()</span>
           </code></pre>
           <aside class="notes" data-markdown>
-            - TODO: Missing transitions here - fix that
             - So `Path` objects have lots of useful features built-in...
             - But what happens when you actually want to *use* a `Path` object as a file path?
             - Back when `pathlib` was first added to Python, **(click)** in order to actually *use* a `Path` object, you might have needed **(click)** to convert the `Path` to a string...
-            - Today, that's completely unnecessary...
+            - Today, that's completely unnecessary... **(click)**
             - Because Python's built-in `open` function accepts `Path` objects
+            - The `open` function *used to* only accept strings, but since Python 3.6 `open` works with strings *and* with `pathlib.Path` objects
             - In fact... pretty much *every* utility in Python that accepts a file path as a string will *also* accept a `Path` object...
           </aside>
         </section>
@@ -1074,11 +1080,10 @@ with open(<strong>path</strong>) as f:
       <!-- 3 minutes -->
       <section>
         <section>
-          <h2>Okay, but how?</h2>
+          <h2>Using <code>pathlib</code></h2>
           <aside class="notes" data-markdown>
-            - TODO: Change 'how can you' to 'how should you start using pathlib'
             - So `pathlib` is great...
-            - But in practice, how can you start using `pathlib`?
+            - But in practice, how should you start using `pathlib`?
           </aside>
         </section>
 
@@ -1149,17 +1154,17 @@ True</span>
               <td><code>os.path.abspath(path)</code></td>
               <td><code>Path</code></td>
             </tr>
-            <tr>
+            <tr class="fragment bold-current">
               <td><code>path.name</code></td>
               <td><code>os.path.basename(path)</code></td>
               <td><code>str</code></td>
             </tr>
-            <tr>
+            <tr class="fragment bold-current">
               <td><code>path.parent</code></td>
               <td><code>os.path.dirname(path)</code></td>
               <td><code>Path</code></td>
             </tr>
-            <tr>
+            <tr class="fragment bold-current">
               <td><code>path.suffix</code></td>
               <td><code>os.path.splitext(path)[1]</code></td>
               <td><code>str</code></td>
@@ -1181,12 +1186,14 @@ True</span>
             </tr>
           </table>
           <aside class="notes" data-markdown>
-            - TODO: Need bolding transitions here
             - I always found the functions in `os.path` to be unfortunately named...
             - Lots of shortened words all squashed together...
             - With pathlib, all the same functionality exists as either *methods* or *attributes* on `Path` objects
             - And they're all pretty well-named
-            - Personally, I prefer `name` over `basename`, `parent` over `dirname`, and `suffix` over `splitext` index 1
+            - Personally, I prefer **(click)** the `name` attribute over the `basename` function
+            - **(click)** the `parent` attribute over the `dirname` function
+            - and **(click)** the `suffix` attribute over calling `splitext` function and accessing index 1
+            - If you're looking for a pathlib cheat sheet...
           </aside>
         </section>
 
@@ -1195,7 +1202,7 @@ True</span>
           <h2><code><a href="https://pym.dev/pathlib-module/">pym.dev/pathlib-module</a></code></h2>
           <p><code><a href="https://pyref.dev/pathlib#corresponding-tools">pyref.dev/pathlib#corresponding-tools</a></code></p>
           <aside class="notes" data-markdown>
-            - If you're looking for a pathlib cheat sheet, you can find a couple in an article I wrote on pathlib
+            - ...you can find a couple of cheat sheet tables in that first URL, which is an article that I wrote on pathlib
             - And there's also a table at the bottom of the `pathlib` documentation... which is where that second URL goes
           </aside>
         </section>
@@ -1485,9 +1492,13 @@ with <strong>open(path)</strong> as file:
 
         <section>
           <h3>Unnecessary string conversion</h3>
-          <pre class="python"><code data-trim data-noescape>
+          <pre class="python fragment"><code data-trim data-noescape>
+>>> print(f"Reading: {path}")
+Reading: example.txt
+          </code></pre>
+          <pre class="python fragment"><code data-trim data-noescape>
 path = Path("example.txt")
-with open(<span class="fragment bold">str(path)</span>) as f:
+with open(<strong>str(path)</strong>) as f:
     content = f.read()
           </code></pre>
           <pre class="python fragment"><code data-trim data-noescape>
@@ -1496,11 +1507,11 @@ with open(path) as f:
     content = f.read()</span>
           </code></pre>
           <aside class="notes" data-markdown>
-            - Also, don't convert `Path` objects to strings
-            - ... at least, not unless you really need to
-            - Sometimes I'll convert a `Path` to a string implicitly by using it in a `print` call or in an f-string...
-            - But only because I'm displaying the path to an end user or logging it to a file
-            - If you think you need to convert a `Path` object to a string, you probably don't
+            - If I need display a path to an end user or log it to a file...
+            - I'll often **(click)** implicitly convert it to a string by using it in `print` call or in an f-string
+            - And that's useful
+            - But don't convert `Path` objects to strings **(click)** when you don't need to **(click)**
+            - If you think you need to convert a `Path` to a string, you probably don't
           </aside>
         </section>
 
@@ -1583,7 +1594,8 @@ with open(path) as f:
         <!-- Thank you slide -->
         <section style="text-align: left;" data-background="#663399" data-background-transition="slide" data-transition="slide">
           <h2 style="margin-top: 1.5em;">Thanks!</h2>
-          <h3><a href="http://trey.io/pathlib">trey.io/pathlib</a></h3>
+          <h3><a href="https://pym.dev/pathlib-module/">pym.dev/pathlib-module</a></h3>
+          <!--<h3><a href="http://trey.io/pybeach2025">trey.io/pybeach2025</a></h3>-->
           <div style="margin-top: 2.5em;">
             <p style="float: left; margin-right: 2em;">
               <strong>Trey Hunner</strong><br>
@@ -1595,8 +1607,7 @@ with open(path) as f:
             </p>
           </div>
           <aside class="notes" data-markdown>
-            - TODO Thank you for your attention!
-            - Questions?
+            - Thank you
           </aside>
         </section>
       </section>
