@@ -189,7 +189,7 @@
             - That act as *junk drawers* **(click)**: the `os` module and the `sys` module
             - The `sys` module is the Python interpreter junk drawer
             - The `os` module is the operating system junk drawer
-            - The `os` module has lots a of file-related stuff *and* a bunch of other stuff
+            - The `os` module has lots of file-related stuff *and* a bunch of other stuff
           </aside>
         </section>
 
@@ -492,7 +492,7 @@
           <aside class="notes" data-markdown>
             - These are *most* of the useful path-related utilities included in Python's `os`, `os.path`, `shutil`, and `glob` modules...
             - I say *most* because I removed about 10 less frequently used functions that didn't fit on this slide
-            - In Python 2, the only option when working with file paths was to go hunting for these utilities when we needed them
+            - Back in 2015, in Python 2.7, our only option when working with file paths was to go hunting for these utilities when we needed them
           </aside>
         </section>
 
@@ -696,7 +696,7 @@ def find_editorconfig_file() -> Path:
             <li style="color: #28a745;">☑ Hard to distinguish paths from other strings</li>
           </ul>
           <aside class="notes" data-markdown>
-            - We've seen that the alternatives of pathlib of difficult to find, that path strings are error-prone, and that path strings also make it difficult to distinguish between paths and non-path strings
+            - We've seen that the alternatives to pathlib are difficult to find, that path strings are error-prone, and that path strings also make it difficult to distinguish between paths and non-path strings
             - I'd like to quickly address my last point by comparison to pathlib...
           </aside>
         </section>
@@ -1131,7 +1131,7 @@ True</span>
             - Also, the `Path` class **(click)** can accept multiple arguments to join together... and those arguments can be either strings or other `Path` objects
             - So this **(click)** joins our home directory path with this config filename
             - All 3 of these approaches **(click)** return equivalent `Path` objects
-            - And neither of these is necessarily better than the others
+            - And none of these is necessarily better than the others
             - Although, you'll usually only see that third approach used if we're not sure whether `home` is a `Path` object or a string
           </aside>
         </section>
@@ -1361,24 +1361,24 @@ class GitPath(pathlib.Path):
           <aside class="notes" data-markdown>
             - If you need to attach *metadata* to a custom `Path` object, you can override the `with_segments` method **(click)** to ensure that the metadata is preserved for any *new* `Path` that's *derived* from an *existing* `Path`
             - In our case, we have a `Path` subclass with an additional `repo_root` attribute **(click)**
-            - If we get our path's parent direct **(click)**, our `repo_root` attribute **(click)** will be maintained on the new `GitPath` objects that's generated
+            - If we get our path's parent directory **(click)**, our `repo_root` attribute **(click)** will be maintained on the new `GitPath` object that's generated
             - The thing same would happen if we joined our path with another path: all methods that generate *new* paths call the `with_segments` method
             - This pattern makes it pretty easy to make specialized `Path` subclasses
+            - ...
+            - So you can make a sort of `pathlib` alternative by inheriting from `pathlib.Path`
+            - But you can also make `pathlib` alternatives through *duck typing* **(click)**
           </aside>
         </section>
 
         <section>
-          <h1 class="fragment">🦆</h1>
+          <h1>🦆</h1>
           <ul>
             <li class="fragment">Lists and tuples are sequences</li>
             <li class="fragment">Dictionaries are mappings</li>
             <li class="fragment">Files are file-like objects</li>
-            <li class="fragment">Lists, dictionaries, and files are iterables</li>
             <li class="fragment"><code>pathlib.Path</code> objects are Path-like objects</li>
           </ul>
           <aside class="notes" data-markdown>
-            - So you can make a sort of `pathlib` alternative by inheriting from `pathlib.Path`
-            - But you can also make `pathlib` alternatives through *duck typing* **(click)**
             - An object **(click)** that acts like a list or a tuple is a sequence
             - An object **(click)** that acts like a dictionary is a mapping
             - An object **(click)** that acts like a file is a file-like object
@@ -1404,6 +1404,7 @@ class GitPath(pathlib.Path):
             - That *one* method will allow an object be accepted by all of Python's many path-accepting functions
             - And **(click)** any third-party utility that wants to convert a Path-like object into a string can use the `os.fspath` function to do so
             - This PEP allows **(click)** for a whole ecosystem of Path-like objects beyond just `pathlib`
+            - For example...
           </aside>
         </section>
 
@@ -1424,7 +1425,7 @@ with <span class="fragment bold">open(my_path)</span> as file:
     content = file.read()
           </code></pre>
           <aside class="notes" data-markdown>
-            - For example, here's a class called `MyPath` which *does not* inherit from `pathlib.Path`
+            - ...here's a class called `MyPath` which *does not* inherit from `pathlib.Path`
             - And yet, instances of this class *work* **(click)** with the built-in `open` function
             - The ability to make an object that *acts* like a path allows for third-party libraries that work everywhere that `pathlib` does
           </aside>
@@ -1481,12 +1482,13 @@ with <strong>open(path)</strong> as file:
           </code></pre>
           <p class="fragment">The <code>open</code> method is a relic from an earlier time</p>
           <aside class="notes" data-markdown>
-            - The `Path` class has an `open` method **(click)**
+            - The `Path` class has an `open` method
             - Back in Python 3.5, **(click)** the `open` method was the official way to get an open file out of a `Path` object
             - The Path-like interface was added in Python 3.6 thanks to PEP 519, **(click)** so now `Path` objects work with the built-in `open` function
             - There is no reason to use the `open` method anymore **(click)**
             - The `open` method only exists because there were 2 versions of Python that included `pathlib`, before the `open` function worked with `pathlib`
             - So I recommend *against* the `open` method
+            - I consider the `Path` `open` method to be a *relic* from an earlier version of Python
           </aside>
         </section>
 
@@ -1571,7 +1573,7 @@ with open(path) as f:
             - Except, the `walk` method returns strings, which is a bit of cheat...
             - When I converted all 4 hundred thousand paths back into `Path` objects in order to ask questions of them... **(click)**
             - My code *did* slow down
-            - Although, unless I'm actually planning to process many thousands of files, this kind of slow down is *probably* insignificant
+            - Although, unless I'm actually planning to process many thousands of files, this kind of slow down is *probably* not significant
             - Most path operations **aren't in tight loops**
             - **(click)** Readability is usually more important than micro-optimizations
             - Use the right tool for the right job.
