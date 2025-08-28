@@ -578,7 +578,7 @@ TEMPLATES_DIR = BASE_DIR  + os.sep + "templates"
           <aside class="notes" data-markdown>
             - the many `os.path` utilities are useful
             - But performing *string manipulations* on path strings can get us in trouble
-            - If we forget to use these utilities, and instead performan *string manipulations* on our path strings, we *might* end up with buggy code
+            - If we forget to use these utilities, and instead perform *string manipulations* on our path strings, we *might* end up with buggy code
           </aside>
         </section>
 
@@ -740,7 +740,7 @@ TEMPLATES_DIR = BASE_DIR / "templates"
 
         <section>
           <pre class="python"><code data-trim data-noescape>
-from os.path import isdir, join
+from os.path import isdir, join, isfile
 from glob import iglob
 # ...
 if isdir(path):
@@ -1301,7 +1301,7 @@ class GitPath(pathlib.Path):
             <li class="fragment">Built-in functions like <code>open()</code> accept path-like objects</li>
             <li class="fragment">Any object with a <code>__fspath__()</code> method works</li>
             <li class="fragment">Third-party libraries use <code>os.fspath()</code> paths to strings</li>
-            <li class="fragment">Enables third-party path-like</li>
+            <li class="fragment">Enables third-party path-like objects</li>
           </ul>
           <aside class="notes" data-markdown>
             - PEP 519 defines **(click)** the Path-like protocol
@@ -1449,9 +1449,9 @@ with open(path) as f:
             - pathlib is slow
             - It *is* true that `pathlib` can be slower for *some* operations... **(click)**
             - But readability is sometimes worth a small performance penalty
-            - I searched 4 hundred thousand files **(click)** with `os.walk` **(click)** and with the `pathlib` `walk` method **(click)**
+            - I searched 400,000 files **(click)** with `os.walk` **(click)** and with the `pathlib` `walk` method **(click)**
             - And `pathlib` wasn't any slower...
-            - Except, the `walk` method returns strings, which is a bit of cheat...
+            - Except, the `walk` method returns strings, which is a bit of a cheat...
             - When I converted all 4 hundred thousand paths back into `Path` objects in order to ask questions of them... **(click)**
             - My code *did* slow down
             - Although, unless I'm actually planning to process many thousands of files, this kind of slow down is *probably* not significant
@@ -1506,10 +1506,11 @@ def process_config(config_path):
     return path.read_text()
 
 # Legacy code still works
-old_function("/path/to/config.txt")
-new_function(Path("config.txt"))
+process_config("/path/to/config.txt")  # string path
+process_config(Path("config.txt"))      # Path object
 
 # Mix and match as you migrate
+import os
 for filename in os.listdir(directory):
     file_path = Path(directory) / filename  # pathlib joining
     if file_path.suffix == '.py':           # pathlib properties
@@ -1520,7 +1521,7 @@ for filename in os.listdir(directory):
           <aside class="notes" data-markdown>
             - Something that's pretty great about `pathlib` is that you *can* gradually adopt `pathlib`
             - Path objects *should* work everywhere string paths work
-            - And you can use the built-in `Path` class to make sure that the path you're working is a `Path` object and not a string
+            - And you can use the built-in `Path` class to make sure that the path you're working with is a `Path` object and not a string
             - Just as you can pass any iterable to the built-in `list` function to turn it into a `list`, including the `list` type, you can also pass either strings *or* `Path` objects to the `Path` class to make sure you're working with a `Path` object
           </aside>
         </section>
@@ -1597,7 +1598,7 @@ import os.path
 print(os.path.exists(my_file))  # Works!
           </code></pre>
           <aside class="notes" data-markdown>
-            - For example, the plumbum library has a Path class that works differently from pathlib's `Path` class, but it has `__fspath__` method...
+            - For example, the plumbum library has a Path class that works differently from pathlib's `Path` class, but it has a `__fspath__` method...
             - Which means, it also works with the built-in `open` function!
             - Thanks to this PEP 519, there are `pathlib` alternatives that work just as well as `pathlib` does
           </aside>
