@@ -1271,14 +1271,13 @@ class GitPath(pathlib.Path):
         return f"{type(self).__name__}({str(self)!r}, repo_root={self.repo_root!r})"
           </code></pre>
           <aside class="notes" data-markdown>
-            - If you need to attach *metadata* to a custom `Path` object, you can override the `with_segments` method **(click)** to ensure that the metadata is preserved for any *new* `Path` that's *derived* from an *existing* `Path`
-            - In our case, we have a `Path` subclass with an additional `repo_root` attribute **(click)**
-            - If we get our path's parent directory **(click)**, our `repo_root` attribute **(click)** will be maintained on the new `GitPath` object that's generated
-            - The same thing would happen if we joined our path with another path: all methods that generate *new* paths call the `with_segments` method
-            - This pattern makes it pretty easy to make specialized `Path` subclasses
+            - Inheriting from the `Path` class *probably* isn't something you'll do often...
+            - But when you do, if you need to attach custom *metadata* `Path` objects, you can override the `with_segments` method **(click)**
+            - This ensures that the metadata is preserved for any *new* `Path` that's *derived* from an *existing* `Path` **(click)**
+            - So for example, if we get the `parent` directory **(click)* of one of these custom `GitPath` objects, our `repo_root` attribute **(click)** will be maintained on the new `GitPath` object that's returned
             - ...
-            - So you can make a sort of `pathlib` alternative by inheriting from `pathlib.Path`
-            - But you can also make `pathlib` alternatives through *duck typing* **(click)**
+            - So you can make a sort of `pathlib` by making specialized subclasses of `pathlib.Path`
+            - But you can also make `pathlib` alternatives...
           </aside>
         </section>
 
@@ -1291,6 +1290,8 @@ class GitPath(pathlib.Path):
             <li class="fragment"><code>pathlib.Path</code> objects are Path-like objects</li>
           </ul>
           <aside class="notes" data-markdown>
+            - through duck typing
+            - ...
             - An object **(click)** that acts like a list or a tuple is a sequence
             - An object **(click)** that acts like a dictionary is a mapping
             - An object **(click)** that acts like a file is a file-like object
@@ -1407,14 +1408,16 @@ with open(<strong>path</strong>) as f:
         <section>
           <h3>Better Path constructor usage</h3>
           <pre class="python"><code data-trim data-noescape>
-<span class="fragment">config = Path(directory)<span class="fragment">.joinpath(".editorconfig")</span></span>
-<span class="fragment">config = Path(directory) / ".editorconfig"</span>
-<span class="fragment">config = Path(directory, ".editorconfig")</span>
+<span class="fragment">directory = "/home/trey/project"
+filename = ".editorconfig"</span>
+<span class="fragment">config = Path(directory)<span class="fragment">.joinpath(filename)</span></span>
+<span class="fragment">config = Path(directory) / filename</span>
+<span class="fragment">config = Path(directory, filename)</span>
           </code></pre>
           <p class="fragment">Works whether <code>directory</code> is a string or Path object</p>
           <aside class="notes" data-markdown>
             - Also, don't forget that the `Path` constructor can accept multiple arguments
-            - So if you have a directory string and a file string and you'd like to join them together, you don't need to **(click)** make a `Path` object and then **(click)** use `joinpath` or **(click)** the `/` operator...
+            - So if you have **(click)** a directory string and a file string and you'd like to join them together, you don't need to **(click)** make a `Path` object and then **(click)** use `joinpath` or **(click)** the `/` operator...
             - You can just **(click)** pass both of your strings to the `Path` class
             - This **(click)** even works if you're not sure whether one of these is already a `Path` object...
           </aside>
@@ -1470,12 +1473,12 @@ with open(<strong>path</strong>) as f:
 
         <section>
           <h1>pathlib</h1>
-          <p style="font-size: 1.5em;"><q>just another way to represent paths</q></p>
+          <p style="font-size: 1.5em;" class="fragment strike"><q>just another way to represent paths</q></p>
           <p style="font-size: 1.5em;" class="fragment"><q>the ideal way to represent file paths</q></p>
           <aside class="notes" data-markdown>
             - pathlib isn't just a different API **(click)**
             - pathlib is about acknowledging that file paths are important enough to warrant their own data type
-            - ... a data type that's designed to make file path operations *easy*
+            - ... a data type that's designed to make file path operations *easy* **(click)**
             - It's about representing file paths *properly*
           </aside>
         </section>
