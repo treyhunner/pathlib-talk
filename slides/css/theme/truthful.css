@@ -392,3 +392,7 @@ section {
   padding-top: 3vh;
   padding-bottom: 3vh;
 }
+.reveal.has-dark-background #title-footer {
+  opacity: 0.95;
+  color: #eee;
+}
