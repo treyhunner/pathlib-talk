@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Trey Hunner">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style type="text/css">
+    .container {
+      width: auto;
+      max-width: 680px;
+      padding: 0 15px;
+      margin-top: 4em;
+    }
+    </style>
+
+    <title>pathlib: why and How to Use It</title>
+  </head>
+  <body>
+    <main role="main" class="container">
+    <header>
+      <h1><code>pathlib.Path</code></h1>
+      <h2>Why and how to use it</h2>
+    </header>
+
+    <hr>
+
+    <p>
+    Hello!
+    </p>
+    <p>
+    This page includes resources related to my PyBeach 2025 talk, <strong>pathlib.Path: why and how to use it</strong>.
+    This page also contains links to my slides and information about me.
+    </p>
+    <p>
+    If you'd like to stay in touch and get a Python tip every week, <a href="#newsletter">sign up for my newsletter</a>.
+    </p>
+
+    <hr>
+
+    <h3>Recording of this talk</h3>
+    <p>
+    The recording of this talk will be available here after the conference.
+    </p>
+    <!-- <iframe width="100%" height="340" src="https://www.youtube.com/embed/PLACEHOLDER" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+
+    <hr>
+
+    <h3>The slides</h3>
+    <p>
+    You can find the slides for the talk <a href="https://treyhunner.com/PyBeach2025/slides/">here</a>.
+    </p>
+    <p><a href="https://treyhunner.com/PyBeach2025/slides/" class="btn btn-outline-info btn-lg">Go see the slides!</a></p>
+
+    <hr>
+
+    <h3 id="newsletter">Get a Python tip every week 🕵️‍♀️</h3>
+
+    <div>
+    <p></p>
+    <p>
+    Need to <strong>fill in gaps</strong> in your <strong>Python skills</strong>?
+    I send weekly emails designed to do just that.
+    </p>
+    <img class="mr-3 mb-3 float-left rounded-circle" src="https://www.gravatar.com/avatar/93a988bd85040f58f8417dc4be78c7de?s=80" alt="Trey Hunner smiling in a t-shirt against a yellow wall">
+    <p>
+    My name is Trey Hunner. I help Python developers level-up their skills through corporate training and habit-based learning. I share my favorite Python <strong>insights and tips</strong> via email every week.
+    </p>
+    <div class="clearfix"></div>
+    <p class="pt-2">
+    Subscribe to <strong>fill in gaps in your Python skills</strong>.
+    </p>
+    </div>
+
+    <form action="https://www.getdrip.com/forms/621117322/submissions" method="post" data-drip-embedded-form="621117322" id="drip-ef-621117322" class="mt-3">
+      <div class="form-row align-items-center">
+        <div class="col-auto">
+          <input type="email" name="fields[email]" id="drip-email" placeholder="email@domain.com" required="" class="form-control form-control-lg">
+        </div>
+        <div class="col-auto">
+          <input type="hidden" name="fields[source]" value="pybeach2025">
+          <div style="display: none;" aria-hidden="true">
+            <label for="website">Website</label><br>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="false" value="">
+          </div>
+          <input type="hidden" name="tags[]" id="tags_" value="newsletter" tabindex="-1">
+          <input type="submit" value="Sign up for Python tips" data-drip-attribute="sign-sign-button" class="btn btn-success btn-lg mt-3 mt-md-0">
+        </div>
+      </div>
+    </form>
+
+    <hr>
+
+    <h3>Resources on <code>pathlib</code></h3>
+
+    <h5><a href="https://pym.dev/pathlib-module/">&ldquo;Python's pathlib module&rdquo; by Trey Hunner</a></h5>
+    <p>
+    A comprehensive article explaining how to use <code>pathlib</code> with cheat sheet tables.
+    </p>
+
+    <h5><a href="https://docs.python.org/3/library/pathlib.html">pathlib documentation</a></h5>
+    <p>
+    The official Python documentation for the <code>pathlib</code> module.
+    </p>
+
+    <h5><a href="https://youtu.be/pUw7bRAFLPc">&ldquo;Hot: pathlib, Not: string paths&rdquo; by Josh Schneider</a></h5>
+    <p>
+    Josh mentions some facts about <code>pathlib.Path</code> that I didn't cover in this talk
+    </p>
+
+    <h5><a href="https://peps.python.org/pep-0519/">&ldquo;PEP 519 &#8211; Adding a file system path protocol&rdquo;</a></h5>
+    <p>
+    The PEP that introduced the <code>os.PathLike</code> protocol, enabling <code>pathlib.Path</code> objects to work with built-in functions.
+    </p>
+
+    <h5><a href="https://treyhunner.com/2018/12/why-you-should-be-using-pathlib/">&ldquo;Why you should be using pathlib&rdquo; by Trey Hunner</a></h5>
+    <p>
+    An earlier article I wrote making the case for adopting <code>pathlib</code> in your Python code.
+    </p>
+
+    <h5><a href="https://treyhunner.com/2019/01/no-really-pathlib-is-great/">&ldquo;No really, pathlib is great&rdquo; by Trey Hunner</a></h5>
+    <p>
+    A follow up to that earlier article.
+    </p>
+
+    <hr>
+
+    <h3>More of my talks</h3>
+
+    <h5><a href="https://pyvideo.org/north-bay-python-2025/variables-and-objects-its-pointers-all-the-way-down.html">&ldquo;Variables and objects in Python&rdquo; at North Bay Python 2025</a></h5>
+    <p>
+    I explain the nature of Python's variables and data structures.
+    </p>
+
+    <h5><a href="https://pyvideo.org/pycon-us-2022/python-oddities-explained.html">&ldquo;Python Oddities Explained&rdquo; at PyCon US 2022</a></h5>
+    <p>
+    I discuss some of my favorite Python oddities, as a way of deepening our skills by breaking things.
+    </p>
+
+    <h5><a href="https://pyvideo.org/pycon-us-2020/comprehensible-comprehensions.html">&ldquo;Comprehensible Comprehensions&rdquo; at PyCon US 2020</a></h5>
+    <p>
+    An talk I gave during the online-only PyCon US 2020 on why I love comprehensions and how I make them readable.
+    </p>
+
+    <footer class="pt-3 my-4 border-top">
+      <ul class="list-inline">
+        <li class="list-inline-item"><a href="https://www.pythonmorsels.com/">Python Morsels</a></li>
+        <li class="list-inline-item"><a href="http://truthful.technology">Python Team Training</a></li>
+        <li class="list-inline-item"><a href="http://treyhunner.com">Trey's Writing</a></li>
+        <li class="list-inline-item"><a href="https://bsky.app/profile/trey.io">Trey's Bluesky</a></li>
+        <li class="list-inline-item"><a href="https://mastodon.social/@treyhunner">Trey's Mastodon</a></li>
+      </ul>
+    </footer>
+
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+  </body>
+</html>
