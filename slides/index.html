@@ -36,7 +36,7 @@
           <small><a href="http://treyhunner.com" rel="author">Trey Hunner</a> / <a href="https://twitter.com/treyhunner">@treyhunner</a></small>
           </p>
           <aside class="notes" data-markdown>
-            - Today I plan to convince you that you should stop representing your file paths as strings and start using `pathlib` for *all* of your file paths
+            - Today, I plan to convince you that you should stop representing your file paths as strings and start using `pathlib` for *all* of your file paths
           </aside>
         </section>
 
@@ -52,7 +52,7 @@
           <aside class="notes" data-markdown>
             - I help folks level-up their Python skills
             - I run both **(click)** virtual and on-site Python workshops and courses for teams
-            - And I run **(click)** Python Morsels, which is a weekly skill-building service for Python developers *all* skill levels
+            - And I run **(click)** Python Morsels, which is a weekly skill-building service for Python developers of *all* skill levels
             - I also share **(click)** a Python tip every week through my newsletter, which you can find at trey.io/news
           </aside>
         </section>
@@ -67,7 +67,7 @@
 >>> path = "/home/trey/Documents/some_file.txt"
           </code></pre>
           <aside class="notes" data-markdown>
-            - For most of Python's history, file paths were represented by strings
+            - For most of Python's history, file paths have been represented as strings
             - This still works today and it always will
             - ...
             - Before we really discuss `pathlib`, I'd like to talk about why *this* can be messy
@@ -116,13 +116,13 @@
           </div>
           <aside class="notes" data-markdown>
             - Let's hop in a time machine for a bit...
-            - Let's roll the clock back by about 330 million seconds
+            - Let's roll the clock back about 10 years
             - The year is 2015
             - **(click)** The Late Show with Stephen Colbert had just premiered
             - **(click)** TikTok didn't exist, but there was something called **(click)** Vine
-            - Everyone's arguing about **(click)** whether the dress is black and blue or white and gold
+            - Everyone was arguing about **(click)** whether the dress is black and blue or white and gold
             - And everyone was preparing **(click)** their left shark Halloween costumes
-            - Also we **(click)** were still using Python 2.7, which won't be end-of-life'd for another 5 years
+            - Also we **(click)** were still using Python 2.7, which won't be end-of-lifed for another 5 years
           </aside>
         </section>
 
@@ -210,7 +210,7 @@
             - Utilities for **(click)** renaming and replacing files
             - *And* utilities for **(click)** making directories
             - ...
-            - These are most of the file-related utilities in Python's `os`
+            - These are most of the file-related utilities in Python's `os` module
             - But this is *not* everything that's *in* the `os` module...
             - There's also all this...
           </aside>
@@ -465,7 +465,7 @@
           <p><code>os.rename()</code>, <code>os.replace()</code>, <code>os.remove()</code></p>
           <p><code>os.mkdir()</code>, <code>os.makedirs()</code></p>
           <aside class="notes" data-markdown>
-            - My point in dumping out the contents the `os` junk drawer
+            - My point in dumping out the contents of the `os` junk drawer
             - Is to point out how difficult it can be to *find* the dozen-ish file-related utilities that are *in* the `os` module
             - And these are just the file-related utilities that live in the `os` module...
             - This *doesn't* include everything in `os.path`, `shutil`, and `glob`...
@@ -565,7 +565,7 @@ TEMPLATES_DIR = BASE_DIR  + os.sep + "templates"
           C:\Documents\ever\seen/a path/like this.txt
           </code></pre>
           <aside class="notes" data-markdown>
-            - ...we might accidentally end up with a mix of forward slashes and back slashes, which is technically valid on Windows but it also looks really weird
+            - ...we might accidentally end up with a mix of forward slashes and backslashes, which is technically valid on Windows but it also looks really weird
             - Which... is why
           </aside>
         </section>
@@ -578,7 +578,7 @@ TEMPLATES_DIR = BASE_DIR  + os.sep + "templates"
           <p><code>splitext(path)</code>, <code>getsize(path)</code></p>
           <p><code>relpath(path, parent)</code>, <code>join(parent, name)</code></p>
           <aside class="notes" data-markdown>
-            - the many `os.path` utilities are useful
+            - The many `os.path` utilities are useful
             - But performing *string manipulations* on path strings can get us in trouble
             - If we forget to use these utilities, and instead perform *string manipulations* on our path strings, we *might* end up with buggy code
           </aside>
@@ -827,7 +827,7 @@ content = Path("config.txt").read_text()
             - Copying files **(click)** is another good example of where `pathlib` shines...
             - In Python 3.14, `pathlib`'s `Path` class will have a `copy` method **(click)** and a `copy_into` method **(click)**
             - Before these 2 methods existed, we needed to reach for either `copyfile` **(click)**, `copy` **(click)**, `copy2` **(click)**, or `copytree` **(click)** from `shutil`
-            - All of these have *slightly* different uses and *I* always needed to read the documentation to figure which one to use
+            - All of these have *slightly* different uses and *I* always needed to read the documentation to figure out which one to use
           </aside>
         </section>
 
@@ -1009,14 +1009,14 @@ with open(<strong>path</strong>) as f:
             - Whether you need to:
               - change directories
               - change the ownership of a file
-              - connect to a sqlite database
+              - connect to a SQLite database
               - log to a file
               - create a ZIP file
               - or run a subprocess
             - ...you can use `pathlib.Path` objects instead of using path strings...
             - You don't need to convert `Path` objects back to strings
-            - Every standard library function that *should* accept `Path` objects, does
-            - In fact even standard library utilities that are specifically designed for a path strings will also work with `Path` objects...
+            - Every standard library function that *should* accept `Path` objects does
+            - In fact even standard library utilities that are specifically designed for path strings will also work with `Path` objects...
           </aside>
         </section>
 
@@ -1105,7 +1105,7 @@ WindowsPath('documents/notes.txt')
 True</span>
           </code></pre>
           <aside class="notes" data-markdown>
-            - Pretty much anytime you encounter a string that represents a file path **(click)**, you'll pass that string to the `Path` class to get `Path` object **(click)**
+            - Pretty much anytime you encounter a string that represents a file path **(click)**, you'll pass that string to the `Path` class to get a `Path` object **(click)**
             - When you're writing cross-platform compatible code, you'll want to use forward slashes in the string literals you pass to `pathlib.Path`
             - ... but don't worry about backslashes on Windows! **(click)**
             - If you end up with a backslash-separated path on a Windows machine, pathlib will normalize it automatically! **(click)**
@@ -1198,7 +1198,7 @@ True</span>
             - And they're all pretty well-named
             - Personally, I prefer **(click)** the `name` attribute over the `basename` function
             - **(click)** the `parent` attribute over the `dirname` function
-            - and **(click)** the `suffix` attribute over calling `splitext` function and accessing index 1
+            - and **(click)** the `suffix` attribute over calling the `splitext` function and accessing index 1
             - If you're looking for a pathlib cheat sheet...
           </aside>
         </section>
@@ -1223,7 +1223,7 @@ True</span>
           <aside class="notes" data-markdown>
             - This talk *is* about pathlib... but it isn't *just* about pathlib
             - Code that uses `pathlib` can also work with code that *inherits* from `pathlib.Path`...
-            - *And* it's also possible to practice *duck tying* when it comes to path objects
+            - *And* it's also possible to practice *duck typing* when it comes to path objects
           </aside>
         </section>
 
@@ -1272,9 +1272,9 @@ class GitPath(pathlib.Path):
           </code></pre>
           <aside class="notes" data-markdown>
             - Inheriting from the `Path` class *probably* isn't something you'll do often...
-            - But when you do, if you need to attach custom *metadata* `Path` objects, you can override the `with_segments` method **(click)**
+            - But when you do, if you need to attach custom *metadata* to `Path` objects, you can override the `with_segments` method **(click)**
             - This ensures that the metadata is preserved for any *new* `Path` that's *derived* from an *existing* `Path` **(click)**
-            - So for example, if we get the `parent` directory **(click)* of one of these custom `GitPath` objects, our `repo_root` attribute **(click)** will be maintained on the new `GitPath` object that's returned
+            - So for example, if we get the `parent` directory **(click)** of one of these custom `GitPath` objects, our `repo_root` attribute **(click)** will be maintained on the new `GitPath` object that's returned
             - ...
             - So you can make a sort of `pathlib` by making specialized subclasses of `pathlib.Path`
             - But you can also make `pathlib` alternatives...
@@ -1314,7 +1314,7 @@ class GitPath(pathlib.Path):
             - PEP 519 defines **(click)** the Path-like protocol
             - All Path-like objects are accepted by **(click)** `open`, and all other built-in path tools
             - The only thing that's needed **(click)** for a Path-like object is a `\_\_fspath__` method
-            - That *one* method will allow an object be accepted by all of Python's many path-accepting functions
+            - That *one* method will allow an object to be accepted by all of Python's many path-accepting functions
             - And **(click)** any third-party utility that wants to convert a Path-like object into a string can use the `os.fspath` function to do so
             - This PEP allows **(click)** for a whole ecosystem of Path-like objects beyond just `pathlib`
             - For example...
@@ -1352,7 +1352,7 @@ with <span class="fragment bold">open(my_path)</span> as file:
         <section>
           <h2>pathlib anti-patterns</h2>
           <aside class="notes" data-markdown>
-            - Before we conclude, I'd like to make sure to discuss a couple common mistakes that new `pathlib` users often make
+            - Before we conclude, I'd like to make sure to discuss a couple of common mistakes that new `pathlib` users often make
           </aside>
         </section>
 
@@ -1397,8 +1397,8 @@ with open(<strong>path</strong>) as f:
     content = f.read()</span>
           </code></pre>
           <aside class="notes" data-markdown>
-            - If I need display a path to an end user or log it to a file...
-            - I'll often **(click)** implicitly convert it to a string by using it in `print` call or in an f-string
+            - If I need to display a path to an end user or log it to a file...
+            - I'll often **(click)** implicitly convert it to a string by using it in a `print` call or in an f-string
             - And that's useful
             - But don't convert `Path` objects to strings **(click)** when you don't need to **(click)**
             - If you think you need to convert a `Path` to a string, you probably don't
@@ -1442,7 +1442,7 @@ filename = ".editorconfig"</span>
             - Many *common* path operations **(click)** are even simpler than they were before
             - And you get to **(click)** avoid awkward stringly-typed code
             - `pathlib` can help make your code **(click)** more readable and more maintainable
-            - But... there's a very common concern I often hear about pathlib, that I feel is unwarranted...
+            - But... there's a very common concern I often hear about pathlib that I feel is unwarranted...
           </aside>
         </section>
 
@@ -1461,9 +1461,9 @@ filename = ".editorconfig"</span>
             - I searched 400,000 files **(click)** with `os.walk` **(click)** and with the `pathlib` `walk` method **(click)**
             - And `pathlib` wasn't any slower...
             - Except, the `walk` method returns strings, which is a bit of a cheat...
-            - When I converted all 4 hundred thousand paths back into `Path` objects in order to ask questions of them... **(click)**
+            - When I converted all 400,000 paths back into `Path` objects in order to ask questions of them... **(click)**
             - My code *did* slow down
-            - Although, unless I'm actually planning to process many thousands of files, this kind of slow down is *probably* not significant
+            - Although, unless I'm actually planning to process many thousands of files, this kind of slowdown is *probably* not significant
             - Most path operations **aren't in tight loops**
             - **(click)** Readability is usually more important than micro-optimizations
             - Use the right tool for the right job.
