@@ -36,7 +36,7 @@
           <small><a href="http://treyhunner.com" rel="author">Trey Hunner</a> / <a href="https://twitter.com/treyhunner">@treyhunner</a></small>
           </p>
           <aside class="notes" data-markdown>
-            - Today, I plan to convince you that you should stop representing your file paths as strings and start using `pathlib` for *all* of your file paths
+            - Today, I plan to convince you that you should *stop* representing your **file paths** as **strings** and *start* using `pathlib`
           </aside>
         </section>
 
@@ -50,10 +50,13 @@
             <a href="http://pythonmorsels.com"><img src="morsels-logo.svg" class="no-style aboutme-logos" alt="Python Morsels"></a>
           </div>
           <aside class="notes" data-markdown>
+            - First... a *very* quick introduction
             - I help folks level-up their Python skills
             - I run both **(click)** virtual and on-site Python workshops and courses for teams
             - And I run **(click)** Python Morsels, which is a weekly skill-building service for Python developers of *all* skill levels
             - I also share **(click)** a Python tip every week through my newsletter, which you can find at trey.io/news
+            - ...
+            - Now let's talk about file paths...
           </aside>
         </section>
       </section>
@@ -66,11 +69,12 @@
           <pre class="python"><code data-trim data-noescape style="font-size: 130%; padding: 0.75em;">
 >>> path = "/home/trey/Documents/some_file.txt"
           </code></pre>
+          <h2 class="fragment"><code>pathlib</code>: added in Python 3.4</h2>
           <aside class="notes" data-markdown>
             - For most of Python's history, file paths have been represented as strings
-            - This still works today and it always will
+            - This *still works* today and it always will
             - ...
-            - Before we really discuss `pathlib`, I'd like to talk about why *this* can be messy
+            - But there are *problems* with representing file paths as strings, **(click)** which is why about 10 years ago, the Python core developers introduced `pathlib`
           </aside>
         </section>
 
@@ -115,14 +119,13 @@
             <img src="pycon_2015.png" class="fragment no-style" style="margin: auto;" data-fragment-index=6>
           </div>
           <aside class="notes" data-markdown>
-            - Let's hop in a time machine for a bit...
-            - Let's roll the clock back about 10 years
+            - So, let's hop in a time machine and roll back the clock about 10 years...
             - The year is 2015
             - **(click)** The Late Show with Stephen Colbert had just premiered
             - **(click)** TikTok didn't exist, but there was something called **(click)** Vine
-            - Everyone was arguing about **(click)** whether the dress is black and blue or white and gold
+            - Everyone was arguing about **(click)** whether the dress is **black and blue** or **white and gold**
             - And everyone was preparing **(click)** their left shark Halloween costumes
-            - Also we **(click)** were still using Python 2.7, which won't be end-of-lifed for another 5 years
+            - Also most **(click)** Python users were still using Python 2.7, which won't be end-of-lifed for another 5 years
           </aside>
         </section>
 
@@ -453,6 +456,8 @@
             - *That* is everything in the `os` module
             - Well, that's all functions...
             - There are also dozens of constants... that I'm not going to show you
+            - My point in dumping out the contents of the `os` junk drawer
+            - Is to point out how difficult it can be to *find*...
           </aside>
         </section>
 
@@ -465,9 +470,8 @@
           <p><code>os.rename()</code>, <code>os.replace()</code>, <code>os.remove()</code></p>
           <p><code>os.mkdir()</code>, <code>os.makedirs()</code></p>
           <aside class="notes" data-markdown>
-            - My point in dumping out the contents of the `os` junk drawer
-            - Is to point out how difficult it can be to *find* the dozen-ish file-related utilities that are *in* the `os` module
-            - And these are just the file-related utilities that live in the `os` module...
+            - ...the dozen-ish **path-related utilities** that are *in* the `os` module
+            - And these are just the ones that live **in the `os` module**...
             - This *doesn't* include everything in `os.path`, `shutil`, and `glob`...
           </aside>
         </section>
@@ -491,9 +495,8 @@
           <code style="white-space: nowrap;">os.path.relpath(path, parent)</code>, <code style="white-space: nowrap;">os.path.join(parent, name)</code>,
           <code>glob.glob(pattern)</code>
           <aside class="notes" data-markdown>
-            - These are *most* of the useful path-related utilities included in Python's `os`, `os.path`, `shutil`, and `glob` modules...
-            - I say *most* because I removed about 10 less frequently used functions that didn't fit on this slide
-            - Back in 2015, in Python 2.7, our only option when working with file paths was to go hunting for these utilities when we needed them
+            - These are *most* of the useful path-related utilities included in the Python standard library...
+            - Back in 2015, in Python 2.7, our **only option** when working with **file paths** was to **go hunting** for these utilities when we needed them
           </aside>
         </section>
 
