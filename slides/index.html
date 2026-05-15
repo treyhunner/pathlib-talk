@@ -102,30 +102,40 @@
 
         <section style="transform-origin: center center; transform: scale(1.1);">
           <div style="height: 600px; display: grid; grid-template-columns: 1fr 1fr 1fr;">
-            <img src="left_shark.jpg" class="fragment no-style" style="margin: auto;" data-fragment-index=5>
-            <img src="the_dress.jpg" class="fragment no-style" style="margin: auto;" data-fragment-index=4>
-            <div style="position: relative; display: inline-block;" class="fragment" data-fragment-index=2>
-            <img src="tiktok_logo.png" class="no-style" style="margin: auto; opacity: 0.8;">
-            <!-- Red X overlay -->
+            <div style="position: relative; display: inline-block;" class="fragment" data-fragment-index=5>
+            <img src="2016_World_Series.svg" class="no-style" style="margin: auto; opacity: 0.8;">
             <div style="position: absolute; top: -10%; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.8;">
-                <!-- First diagonal line -->
                 <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(45deg); transform-origin: center;"></div>
-                <!-- Second diagonal line -->
                 <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(-45deg); transform-origin: center;"></div>
             </div>
             </div>
-            <img src="old_lateshow_colbert_logo.jpg" class="fragment no-style" style="margin: auto;" data-fragment-index=1>
+            <div style="margin: auto;" class="fragment" data-fragment-index=4>
+            <div style="position: relative; display: inline-block;">
+            <img src="brexit.png" class="no-style" style="opacity: 0.8;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.8;">
+                <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(45deg); transform-origin: center;"></div>
+                <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(-45deg); transform-origin: center;"></div>
+            </div>
+            </div>
+            </div>
+            <div style="position: relative; display: inline-block;" class="fragment" data-fragment-index=2>
+            <img src="tiktok_logo.png" class="no-style" style="margin: auto; opacity: 0.8;">
+            <div style="position: absolute; top: -10%; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.8;">
+                <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(45deg); transform-origin: center;"></div>
+                <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(-45deg); transform-origin: center;"></div>
+            </div>
+            </div>
+            <img src="Stranger_Things_logo.png" class="fragment no-style" style="margin: auto;" data-fragment-index=1>
             <img src="vine_wordmark.svg.png" class="fragment no-style" style="margin: auto;" data-fragment-index=3>
-            <img src="pycon_2015.png" class="fragment no-style" style="margin: auto;" data-fragment-index=6>
+            <img src="pycon_2016.jpg" class="fragment no-style" style="margin: auto;" data-fragment-index=6>
           </div>
           <aside class="notes" data-markdown>
             - So, let's hop in a time machine and roll back the clock about 10 years...
-            - The year is 2015
-            - **(click)** The Late Show with Stephen Colbert had just premiered
+            - The year is 2016
+            - **(click)** Stranger Things hadn't premiered yet
             - **(click)** TikTok didn't exist, but there was something called **(click)** Vine
-            - Everyone was arguing about **(click)** whether the dress is **black and blue** or **white and gold**
-            - And everyone was preparing **(click)** their left shark Halloween costumes
-            - Also most **(click)** Python users were still using Python 2.7, which won't be end-of-lifed for another 5 years
+            - We didn't yet know about **(click)** Brexit or **(click)** the Cubs winning the World Series... or a lot of other things
+            - Also most **(click)** Python users were still using Python 2.7, which won't be end-of-lifed for another 4 years
           </aside>
         </section>
 
@@ -496,7 +506,7 @@
           <code>glob.glob(pattern)</code>
           <aside class="notes" data-markdown>
             - These are *most* of the useful path-related utilities included in the Python standard library...
-            - Back in 2015, in Python 2.7, our **only option** when working with **file paths** was to **go hunting** for these utilities when we needed them
+            - Back in 2016, in Python 2.7, our **only option** when working with **file paths** was to **go hunting** for these utilities when we needed them
           </aside>
         </section>
 
@@ -581,8 +591,8 @@ TEMPLATES_DIR = BASE_DIR  + os.sep + "templates"
           <p><code>splitext(path)</code>, <code>getsize(path)</code></p>
           <p><code>relpath(path, parent)</code>, <code>join(parent, name)</code></p>
           <aside class="notes" data-markdown>
-            - The many `os.path` utilities are useful
-            - But performing *string manipulations* on path strings can get us in trouble
+            - Performing *string manipulations* on path strings can get us in trouble
+            - So the many `os.path` utilities *are* useful
             - If we forget to use these utilities, and instead perform *string manipulations* on our path strings, we *might* end up with buggy code
           </aside>
         </section>
@@ -828,7 +838,7 @@ content = Path("config.txt").read_text()
             - With `Path` objects, **(click)** the `mkdir` method *includes* the ability to make missing parent directories, thanks to **(click)** the optional `parents` keyword argument
             - ...
             - Copying files **(click)** is another good example of where `pathlib` shines...
-            - In Python 3.14, `pathlib`'s `Path` class will have a `copy` method **(click)** and a `copy_into` method **(click)**
+            - As of Python 3.14, `pathlib`'s `Path` class has a `copy` method **(click)** and a `copy_into` method **(click)**
             - Before these 2 methods existed, we needed to reach for either `copyfile` **(click)**, `copy` **(click)**, `copy2` **(click)**, or `copytree` **(click)** from `shutil`
             - All of these have *slightly* different uses and *I* always needed to read the documentation to figure out which one to use
           </aside>
@@ -1275,11 +1285,11 @@ class GitPath(pathlib.Path):
           </code></pre>
           <aside class="notes" data-markdown>
             - Inheriting from the `Path` class *probably* isn't something you'll do often...
-            - But when you do, if you need to attach custom *metadata* to `Path` objects, you can override the `with_segments` method **(click)**
-            - This ensures that the metadata is preserved for any *new* `Path` that's *derived* from an *existing* `Path` **(click)**
+            - But when you *do* inherit from the `Path` class, if you need to attach custom *metadata* to `Path` objects, you can override the `with_segments` method **(click)**
+            - This ensures that your metadata will be preserved for any *new* `Path` that's *derived* from an *existing* `Path` **(click)**
             - So for example, if we get the `parent` directory **(click)** of one of these custom `GitPath` objects, our `repo_root` attribute **(click)** will be maintained on the new `GitPath` object that's returned
             - ...
-            - So you can make a sort of `pathlib` by making specialized subclasses of `pathlib.Path`
+            - So you can make your own custom version of `pathlib` by making specialized `Path` subclasses
             - But you can also make `pathlib` alternatives...
           </aside>
         </section>
@@ -1493,7 +1503,7 @@ filename = ".editorconfig"</span>
         <section style="text-align: left;" data-background="#663399" data-background-transition="slide" data-transition="slide">
           <h2 style="margin-top: 1.5em;">Thanks!</h2>
           <!--<h3><a href="https://pym.dev/pathlib-module/">pym.dev/pathlib-module</a></h3>-->
-          <h3><a href="http://trey.io/PyBeach2025">trey.io/PyBeach2025</a></h3>
+          <h3><a href="https://trey.io/PyCon25">trey.io/PyCon25</a></h3>
           <div style="margin-top: 2.5em;">
             <p style="float: left; margin-right: 2em;">
               <strong>Trey Hunner</strong><br>
@@ -1638,7 +1648,7 @@ print(os.path.exists(my_file))  # Works!
           { src: 'plugin/notes/notes.js', async: true },
           { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
           { src: 'plugin/title-footer/title-footer.js', async: true, callback: function() {
-            title_footer.initialize("trey.io/PyBeach2025", "rgba(0,255,0,0.0)");
+            title_footer.initialize("trey.io/PyCon25", "rgba(0,255,0,0.0)");
           } }
         ]
       });
