@@ -102,40 +102,52 @@
 
         <section style="transform-origin: center center; transform: scale(1.1);">
           <div style="height: 600px; display: grid; grid-template-columns: 1fr 1fr 1fr;">
-            <div style="position: relative; display: inline-block;" class="fragment" data-fragment-index=5>
+            <div style="position: relative; display: inline-block;" class="fragment" data-fragment-index=8>
             <img src="2016_World_Series.svg" class="no-style" style="margin: auto; opacity: 0.8;">
             <div style="position: absolute; top: -10%; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.8;">
                 <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(45deg); transform-origin: center;"></div>
                 <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(-45deg); transform-origin: center;"></div>
             </div>
             </div>
-            <div style="margin: auto;" class="fragment" data-fragment-index=4>
+            <div style="margin: auto;">
             <div style="position: relative; display: inline-block;">
-            <img src="brexit.png" class="no-style" style="opacity: 0.8;">
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.8;">
+            <img src="brexit.png" class="fragment no-style" style="opacity: 0.8;" data-fragment-index=6>
+            <div class="fragment" data-fragment-index=7 style="position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; pointer-events: none; opacity: 0.8;">
                 <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(45deg); transform-origin: center;"></div>
                 <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(-45deg); transform-origin: center;"></div>
             </div>
             </div>
             </div>
-            <div style="position: relative; display: inline-block;" class="fragment" data-fragment-index=2>
-            <img src="tiktok_logo.png" class="no-style" style="margin: auto; opacity: 0.8;">
-            <div style="position: absolute; top: -10%; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.8;">
+            <div style="margin: auto;">
+            <div style="position: relative; display: inline-block;">
+            <img src="tiktok_logo.png" class="fragment no-style" style="margin: auto; opacity: 0.8;" data-fragment-index=3>
+            <div class="fragment" data-fragment-index=4 style="position: absolute; top: -10%; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.8;">
                 <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(45deg); transform-origin: center;"></div>
                 <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(-45deg); transform-origin: center;"></div>
             </div>
             </div>
-            <img src="Stranger_Things_logo.png" class="fragment no-style" style="margin: auto;" data-fragment-index=1>
-            <img src="vine_wordmark.svg.png" class="fragment no-style" style="margin: auto;" data-fragment-index=3>
-            <img src="pycon_2016.jpg" class="fragment no-style" style="margin: auto;" data-fragment-index=6>
+            </div>
+            <div style="margin: auto;">
+            <div style="position: relative; display: inline-block;">
+            <img src="Stranger_Things_logo.png" class="fragment no-style" style="opacity: 0.8;" data-fragment-index=1>
+            <div class="fragment" data-fragment-index=2 style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.8;">
+                <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(45deg); transform-origin: center;"></div>
+                <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 10px; background-color: red; transform: translateY(-50%) rotate(-45deg); transform-origin: center;"></div>
+            </div>
+            </div>
+            </div>
+            <img src="vine_wordmark.svg.png" class="fragment no-style" style="margin: auto;" data-fragment-index=5>
+            <img src="pycon_2016.jpg" class="fragment no-style" style="margin: auto;" data-fragment-index=9>
           </div>
           <aside class="notes" data-markdown>
             - So, let's hop in a time machine and roll back the clock about 10 years...
             - The year is 2016
-            - **(click)** Stranger Things hadn't premiered yet
-            - **(click)** TikTok didn't exist, but there was something called **(click)** Vine
-            - We didn't yet know about **(click)** Brexit or **(click)** the Cubs winning the World Series... or a lot of other things
-            - Also most **(click)** Python users were still using Python 2.7, which won't be end-of-lifed for another 4 years
+            - **(click)** Stranger Things **(click)** hadn't premiered yet
+            - **(click)** TikTok **(click)** didn't exist, but there was something called **(click)** Vine
+            - **(click)** Brexit **(click)** hadn't happened yet
+            - the Cubs hadn't yet **(click)** won the World Series
+            - And US politics hadn't *yet* changed in a very big way
+            - But for us at PyCon... **(click)** were still *mostly* using Python 2.7, which would still be supported for another 4 years
           </aside>
         </section>
 
@@ -145,7 +157,8 @@
           <p><code>glob</code></p>
           <p><code>shutil</code></p>
           <aside class="notes" data-markdown>
-            - When we need to work with file paths, there are 4 standard library modules we might reach for...
+            - So back in 2016...
+            - When we needed to work with file paths, there were 4 standard library modules we might have reached for...
             - `os`
             - `os.path`
             - `glob`
